@@ -8,7 +8,7 @@
       rel="stylesheet"
     />
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Phiêu Lưu Ôn Tập Chương 5</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <style>
@@ -35,6 +35,7 @@
 
       * {
         box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
       }
 
       html,
@@ -44,21 +45,9 @@
         font-family: "Be Vietnam Pro", Arial, Helvetica, sans-serif;
         color: var(--text);
         background:
-          radial-gradient(
-            circle at 15% 10%,
-            rgba(107, 233, 255, 0.16),
-            transparent 25%
-          ),
-          radial-gradient(
-            circle at 82% 8%,
-            rgba(138, 125, 255, 0.2),
-            transparent 28%
-          ),
-          radial-gradient(
-            circle at 80% 85%,
-            rgba(255, 216, 108, 0.1),
-            transparent 24%
-          ),
+          radial-gradient(circle at 15% 10%, rgba(107, 233, 255, 0.16), transparent 25%),
+          radial-gradient(circle at 82% 8%, rgba(138, 125, 255, 0.2), transparent 28%),
+          radial-gradient(circle at 80% 85%, rgba(255, 216, 108, 0.1), transparent 24%),
           linear-gradient(135deg, var(--bg-1), var(--bg-2) 48%, var(--bg-3));
         overflow-x: hidden;
         overflow-y: auto;
@@ -122,16 +111,8 @@
 
       .glass {
         background:
-          linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0.09),
-            rgba(255, 255, 255, 0.03)
-          ),
-          linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.02),
-            rgba(255, 255, 255, 0)
-          );
+          linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03)),
+          linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
         border: 1px solid var(--line);
         box-shadow: var(--shadow);
         backdrop-filter: blur(18px);
@@ -152,7 +133,8 @@
       .play-shell,
       .sidebar,
       .question-modal,
-      .win-card {
+      .win-card,
+      .touch-controls {
         border-radius: var(--radius-xl);
       }
 
@@ -176,11 +158,7 @@
         width: 180px;
         height: 180px;
         border-radius: 50%;
-        background: radial-gradient(
-          circle,
-          rgba(255, 255, 255, 0.12),
-          transparent 62%
-        );
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.12), transparent 62%);
         pointer-events: none;
       }
 
@@ -191,29 +169,23 @@
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: #ffffff;
-
         display: inline-flex;
         align-items: center;
         gap: 10px;
-
         padding: 10px 18px;
         border-radius: 999px;
         width: fit-content;
         overflow: hidden;
-
         background: linear-gradient(
           135deg,
           rgba(107, 233, 255, 0.22),
           rgba(138, 125, 255, 0.22)
         );
-
         border: 1px solid rgba(255, 255, 255, 0.28);
-
         box-shadow:
           0 0 14px rgba(107, 233, 255, 0.22),
           0 0 28px rgba(138, 125, 255, 0.16),
           inset 0 1px 0 rgba(255, 255, 255, 0.24);
-
         animation: titleGlow 2.2s ease-in-out infinite;
       }
 
@@ -321,11 +293,7 @@
         border-radius: 999px;
         padding: 10px 18px;
         color: var(--gold);
-        background: linear-gradient(
-          135deg,
-          rgba(255, 216, 108, 0.16),
-          rgba(255, 255, 255, 0.04)
-        );
+        background: linear-gradient(135deg, rgba(255, 216, 108, 0.16), rgba(255, 255, 255, 0.04));
         box-shadow:
           inset 0 1px 0 rgba(255, 255, 255, 0.08),
           0 10px 30px rgba(0, 0, 0, 0.16);
@@ -343,30 +311,26 @@
       }
 
       .title {
-  font-size: clamp(32px, 4vw, 60px);
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  font-weight: 900;
-  margin: 6px 0 6px;
-
-  background: linear-gradient(
-    135deg,
-    #ffffff 0%,
-    #dffdff 22%,
-    #9ff6ff 48%,
-    #d9c2ff 74%,
-    #fff4c7 100%
-  );
-
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-
-  text-shadow: 0 10px 40px rgba(92,225,230,0.10);
-  filter: drop-shadow(0 10px 24px rgba(0,0,0,0.20));
-
-  text-wrap: balance;
-}
+        font-size: clamp(32px, 4vw, 60px);
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+        font-weight: 900;
+        margin: 6px 0 6px;
+        background: linear-gradient(
+          135deg,
+          #ffffff 0%,
+          #dffdff 22%,
+          #9ff6ff 48%,
+          #d9c2ff 74%,
+          #fff4c7 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 10px 40px rgba(92, 225, 230, 0.1);
+        filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.2));
+        text-wrap: balance;
+      }
 
       .hero-subtitle {
         color: #d2e8ff;
@@ -422,6 +386,7 @@
       .btn:hover {
         transform: translateY(-2px);
       }
+
       .btn:active {
         transform: translateY(0);
       }
@@ -454,11 +419,7 @@
       .hud-card {
         border-radius: 22px;
         padding: 16px;
-        background: linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.06),
-          rgba(255, 255, 255, 0.03)
-        );
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
         border: 1px solid rgba(255, 255, 255, 0.08);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
       }
@@ -546,21 +507,9 @@
         gap: 12px;
         min-width: 0;
         background:
-          linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0.08),
-            rgba(255, 255, 255, 0.03)
-          ),
-          radial-gradient(
-            circle at 0% 0%,
-            rgba(92, 225, 230, 0.1),
-            transparent 24%
-          ),
-          radial-gradient(
-            circle at 100% 100%,
-            rgba(124, 92, 255, 0.12),
-            transparent 28%
-          );
+          linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03)),
+          radial-gradient(circle at 0% 0%, rgba(92, 225, 230, 0.1), transparent 24%),
+          radial-gradient(circle at 100% 100%, rgba(124, 92, 255, 0.12), transparent 28%);
         box-shadow:
           inset 0 1px 0 rgba(255, 255, 255, 0.05),
           0 20px 50px rgba(0, 0, 0, 0.28);
@@ -576,8 +525,8 @@
 
       .map-title {
         font-size: clamp(24px, 2.2vw, 30px);
-        font-weight: 1000;
-        letter-spacing: -0.04em;
+        font-weight: 900;
+        letter-spacing: -0.03em;
         line-height: 1.08;
         background: linear-gradient(
           135deg,
@@ -624,21 +573,9 @@
         overflow: hidden;
         border: 1px solid rgba(255, 255, 255, 0.12);
         background:
-          radial-gradient(
-            circle at 20% 0%,
-            rgba(255, 255, 255, 0.08),
-            transparent 28%
-          ),
-          radial-gradient(
-            circle at 80% 100%,
-            rgba(124, 92, 255, 0.12),
-            transparent 24%
-          ),
-          linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0.03),
-            rgba(0, 0, 0, 0.12)
-          );
+          radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.08), transparent 28%),
+          radial-gradient(circle at 80% 100%, rgba(124, 92, 255, 0.12), transparent 24%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.12));
         box-shadow:
           inset 0 0 0 1px rgba(255, 255, 255, 0.03),
           inset 0 30px 80px rgba(255, 255, 255, 0.03),
@@ -650,6 +587,7 @@
         width: 100%;
         height: 100%;
         background: transparent;
+        touch-action: none;
       }
 
       .map-toast,
@@ -694,13 +632,102 @@
       .flash-message.show {
         opacity: 1;
       }
+
       .flash-success {
         color: #c4ffd9;
         border-color: rgba(74, 222, 128, 0.35);
       }
+
       .flash-error {
         color: #ffd0d8;
         border-color: rgba(255, 124, 152, 0.35);
+      }
+
+      .touch-controls {
+        display: none;
+        padding: 14px;
+        gap: 14px;
+        align-items: center;
+        justify-content: space-between;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)),
+          linear-gradient(135deg, rgba(107,233,255,0.06), rgba(138,125,255,0.05));
+        border: 1px solid rgba(255,255,255,0.1);
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.05),
+          0 14px 28px rgba(0,0,0,0.18);
+      }
+
+      .touch-controls.show {
+        display: flex;
+      }
+
+      .touch-hint {
+        color: #d5e9ff;
+        font-size: 13px;
+        line-height: 1.5;
+        margin-bottom: 10px;
+        text-align: center;
+        opacity: 0.95;
+      }
+
+      .touch-left,
+      .touch-right {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .dpad {
+        display: grid;
+        grid-template-columns: 64px 64px 64px;
+        grid-template-rows: 64px 64px 64px;
+        gap: 8px;
+        user-select: none;
+      }
+
+      .dpad .spacer {
+        visibility: hidden;
+      }
+
+      .touch-btn {
+        appearance: none;
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 18px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.13), rgba(255,255,255,0.04)),
+          linear-gradient(135deg, rgba(107,233,255,0.12), rgba(138,125,255,0.12));
+        color: #f2fbff;
+        font-size: 28px;
+        font-weight: 900;
+        display: grid;
+        place-items: center;
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.12),
+          0 10px 20px rgba(0,0,0,0.18);
+        user-select: none;
+        touch-action: none;
+      }
+
+      .touch-btn:active,
+      .touch-btn.active {
+        transform: scale(0.96);
+        background:
+          linear-gradient(180deg, rgba(107,233,255,0.22), rgba(138,125,255,0.18)),
+          linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+        border-color: rgba(107,233,255,0.5);
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.16),
+          0 6px 16px rgba(0,0,0,0.18),
+          0 0 16px rgba(107,233,255,0.18);
+      }
+
+      .touch-legend {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5;
+        text-align: center;
+        max-width: 180px;
       }
 
       .question-modal-backdrop {
@@ -724,11 +751,7 @@
         max-height: min(88dvh, 900px);
         overflow: auto;
         padding: clamp(18px, 2vw, 30px);
-        background: linear-gradient(
-          180deg,
-          rgba(18, 34, 57, 0.96),
-          rgba(11, 24, 43, 0.96)
-        );
+        background: linear-gradient(180deg, rgba(18, 34, 57, 0.96), rgba(11, 24, 43, 0.96));
         border: 1px solid rgba(255, 255, 255, 0.14);
         box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
       }
@@ -774,11 +797,7 @@
         padding: 18px;
         border-radius: 18px;
         border: 1px solid rgba(255, 255, 255, 0.12);
-        background: linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.08),
-          rgba(255, 255, 255, 0.04)
-        );
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
         color: var(--text);
         cursor: pointer;
         transition:
@@ -836,12 +855,7 @@
         display: grid;
         place-items: center;
         border-radius: 50%;
-        background: radial-gradient(
-          circle at 35% 30%,
-          #fff4c4,
-          #ffd86b 40%,
-          #ffb347 82%
-        );
+        background: radial-gradient(circle at 35% 30%, #fff4c4, #ffd86b 40%, #ffb347 82%);
         color: #5d3300;
         font-size: 54px;
         box-shadow: 0 12px 34px rgba(255, 194, 65, 0.35);
@@ -931,27 +945,86 @@
         }
 
         .canvas-wrap {
-          min-height: 360px;
+          min-height: 340px;
+          aspect-ratio: 4 / 3;
         }
 
         .topbar {
           align-items: flex-start;
         }
+
+        .touch-controls.show {
+          display: flex;
+        }
       }
 
-      @media (max-width: 640px) {
+      @media (max-width: 760px) {
         .screen {
           padding: 10px;
         }
 
+        .play-layout {
+          gap: 12px;
+        }
+
+        .sidebar {
+          padding: 12px;
+          gap: 12px;
+        }
+
+        .hud-card {
+          padding: 14px;
+        }
+
+        .play-shell {
+          padding: 12px;
+        }
+
+        .canvas-wrap {
+          min-height: 260px;
+          aspect-ratio: 4 / 3;
+          border-radius: 22px;
+        }
+
+        .map-toast {
+          top: 12px;
+          font-size: 13px;
+          padding: 10px 14px;
+        }
+
+        .flash-message {
+          top: 58px;
+          font-size: 13px;
+          padding: 10px 14px;
+        }
+
+        .touch-controls {
+          padding: 12px;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .touch-legend {
+          max-width: 100%;
+        }
+
+        .dpad {
+          grid-template-columns: 58px 58px 58px;
+          grid-template-rows: 58px 58px 58px;
+          gap: 8px;
+        }
+
+        .touch-btn {
+          border-radius: 16px;
+          font-size: 24px;
+        }
+      }
+
+      @media (max-width: 640px) {
         .options-grid,
         .stats-grid,
         .win-grid {
           grid-template-columns: 1fr;
-        }
-
-        .canvas-wrap {
-          min-height: 300px;
         }
 
         .title {
@@ -969,6 +1042,30 @@
         .question-modal-backdrop {
           padding: 12px;
         }
+
+        .home-section-title {
+          font-size: 17px;
+          letter-spacing: 0.04em;
+          padding: 9px 14px;
+        }
+
+        .mini-badge {
+          font-size: 11px;
+          padding: 8px 12px;
+        }
+
+        .question-title {
+          font-size: 21px;
+        }
+
+        .question-sub {
+          font-size: 15px;
+        }
+
+        .option-btn {
+          padding: 14px;
+          font-size: 15px;
+        }
       }
     </style>
   </head>
@@ -980,33 +1077,26 @@
             <div class="home-section-title">🎮 HƯỚNG DẪN CHƠI</div>
             <div class="home-section-text">
               Di chuyển nhân vật bằng <strong>W A S D</strong> hoặc
-              <strong>phím mũi tên</strong>. Hãy đi đến ô câu hỏi đang được mở
-              để trả lời theo đúng thứ tự.
+              <strong>phím mũi tên</strong>. Trên điện thoại, dùng
+              <strong>cụm nút cảm ứng</strong> để di chuyển. Hãy đi đến ô câu
+              hỏi đang được mở để trả lời theo đúng thứ tự.
             </div>
             <div class="bullet-list">
               <div class="bullet-item">
-                <span class="bullet-dot"></span
-                ><span
-                  >Đi tới ô câu hỏi đang sáng để mở câu hỏi tiếp theo.</span
-                >
+                <span class="bullet-dot"></span>
+                <span>Đi tới ô câu hỏi đang sáng để mở câu hỏi tiếp theo.</span>
               </div>
               <div class="bullet-item">
-                <span class="bullet-dot"></span
-                ><span
-                  >Nếu trả lời đúng ngay lần đầu, bạn nhận
-                  <strong>+10 điểm</strong>.</span
-                >
+                <span class="bullet-dot"></span>
+                <span>Nếu trả lời đúng ngay lần đầu, bạn nhận <strong>+10 điểm</strong>.</span>
               </div>
               <div class="bullet-item">
-                <span class="bullet-dot"></span
-                ><span
-                  >Nếu trả lời sai rồi mới đúng, câu đó vẫn được qua nhưng
-                  <strong>không cộng điểm</strong>.</span
-                >
+                <span class="bullet-dot"></span>
+                <span>Nếu trả lời sai rồi mới đúng, câu đó vẫn được qua nhưng <strong>không cộng điểm</strong>.</span>
               </div>
               <div class="bullet-item">
-                <span class="bullet-dot"></span
-                ><span>Làm đủ 4 câu ở mỗi màn để mở cánh cửa đi tiếp.</span>
+                <span class="bullet-dot"></span>
+                <span>Làm đủ 4 câu ở mỗi màn để mở cánh cửa đi tiếp.</span>
               </div>
             </div>
             <div style="display: grid; gap: 12px; margin-top: 8px">
@@ -1014,11 +1104,7 @@
                 style="
                   padding: 14px 16px;
                   border-radius: 18px;
-                  background: linear-gradient(
-                    135deg,
-                    rgba(107, 233, 255, 0.1),
-                    rgba(255, 255, 255, 0.03)
-                  );
+                  background: linear-gradient(135deg, rgba(107, 233, 255, 0.1), rgba(255, 255, 255, 0.03));
                   border: 1px solid rgba(107, 233, 255, 0.18);
                 "
               >
@@ -1034,19 +1120,14 @@
                   Mẹo chơi
                 </div>
                 <div style="font-size: 16px; line-height: 1.7; color: #e8f7ff">
-                  Quan sát ô nào đang sáng rõ nhất. Đó là câu hỏi đang được phép
-                  làm.
+                  Quan sát ô nào đang sáng rõ nhất. Đó là câu hỏi đang được phép làm.
                 </div>
               </div>
               <div
                 style="
                   padding: 14px 16px;
                   border-radius: 18px;
-                  background: linear-gradient(
-                    135deg,
-                    rgba(255, 216, 108, 0.1),
-                    rgba(255, 255, 255, 0.03)
-                  );
+                  background: linear-gradient(135deg, rgba(255, 216, 108, 0.1), rgba(255, 255, 255, 0.03));
                   border: 1px solid rgba(255, 216, 108, 0.18);
                 "
               >
@@ -1062,8 +1143,7 @@
                   Điểm số
                 </div>
                 <div style="font-size: 16px; line-height: 1.7; color: #fff7df">
-                  Chỉ cộng điểm khi trả lời đúng ngay lần chọn đầu tiên của mỗi
-                  câu.
+                  Chỉ cộng điểm khi trả lời đúng ngay lần chọn đầu tiên của mỗi câu.
                 </div>
               </div>
             </div>
@@ -1085,9 +1165,7 @@
                 placeholder="Nhập tên người chơi"
               />
             </label>
-            <button id="startBtn" class="btn btn-primary">
-              Bắt đầu phiêu lưu
-            </button>
+            <button id="startBtn" class="btn btn-primary">Bắt đầu phiêu lưu</button>
           </div>
 
           <div class="home-card glass">
@@ -1098,31 +1176,20 @@
             </div>
             <div class="bullet-list">
               <div class="bullet-item">
-                <span class="bullet-dot"></span
-                ><span
-                  >Đúng ngay lần chọn đầu tiên: <strong>+10 điểm</strong>.</span
-                >
+                <span class="bullet-dot"></span>
+                <span>Đúng ngay lần chọn đầu tiên: <strong>+10 điểm</strong>.</span>
               </div>
               <div class="bullet-item">
-                <span class="bullet-dot"></span
-                ><span
-                  >Sai ở lần đầu, sau đó chọn đúng:
-                  <strong>0 điểm</strong> nhưng vẫn hoàn thành câu.</span
-                >
+                <span class="bullet-dot"></span>
+                <span>Sai ở lần đầu, sau đó chọn đúng: <strong>0 điểm</strong> nhưng vẫn hoàn thành câu.</span>
               </div>
               <div class="bullet-item">
-                <span class="bullet-dot"></span
-                ><span
-                  >Ô đã xong sẽ chuyển sang màu xanh, cửa sẽ mở khi hoàn thành
-                  đủ 4 câu.</span
-                >
+                <span class="bullet-dot"></span>
+                <span>Ô đã xong sẽ chuyển sang màu xanh, cửa sẽ mở khi hoàn thành đủ 4 câu.</span>
               </div>
               <div class="bullet-item">
-                <span class="bullet-dot"></span
-                ><span
-                  >Màn 2 hoàn thành đủ 4 câu rồi đi qua cửa để vào màn chiến
-                  thắng.</span
-                >
+                <span class="bullet-dot"></span>
+                <span>Màn 2 hoàn thành đủ 4 câu rồi đi qua cửa để vào màn chiến thắng.</span>
               </div>
             </div>
             <div
@@ -1137,11 +1204,7 @@
                 style="
                   padding: 16px;
                   border-radius: 18px;
-                  background: linear-gradient(
-                    135deg,
-                    rgba(138, 125, 255, 0.12),
-                    rgba(255, 255, 255, 0.03)
-                  );
+                  background: linear-gradient(135deg, rgba(138, 125, 255, 0.12), rgba(255, 255, 255, 0.03));
                   border: 1px solid rgba(138, 125, 255, 0.2);
                 "
               >
@@ -1171,11 +1234,7 @@
                 style="
                   padding: 16px;
                   border-radius: 18px;
-                  background: linear-gradient(
-                    135deg,
-                    rgba(107, 233, 255, 0.12),
-                    rgba(255, 255, 255, 0.03)
-                  );
+                  background: linear-gradient(135deg, rgba(107, 233, 255, 0.12), rgba(255, 255, 255, 0.03));
                   border: 1px solid rgba(107, 233, 255, 0.2);
                 "
               >
@@ -1216,16 +1275,10 @@
             <div class="hud-card">
               <h3>Tiến độ màn</h3>
               <div class="stats-grid">
-                <div class="stat">
-                  <span>Điểm</span><strong id="hudScore1">0</strong>
-                </div>
-                <div class="stat">
-                  <span>Đúng</span><strong id="hudCorrect1">0/4</strong>
-                </div>
+                <div class="stat"><span>Điểm</span><strong id="hudScore1">0</strong></div>
+                <div class="stat"><span>Đúng</span><strong id="hudCorrect1">0/4</strong></div>
                 <div class="stat"><span>Màn</span><strong>1 / 2</strong></div>
-                <div class="stat">
-                  <span>Tổng</span><strong id="hudTotal1">0/8</strong>
-                </div>
+                <div class="stat"><span>Tổng</span><strong id="hudTotal1">0/8</strong></div>
               </div>
               <div class="progress-wrap">
                 <div class="progress-bar">
@@ -1236,8 +1289,7 @@
             <div class="hud-card">
               <h3>Gợi ý</h3>
               <p class="note">
-                Làm theo thứ tự câu hỏi. Khi đủ 4/4, cánh cửa ở cuối màn sẽ mở
-                để sang màn chơi mới.
+                Làm theo thứ tự câu hỏi. Khi đủ 4/4, cánh cửa ở cuối màn sẽ mở để sang màn chơi mới.
               </p>
             </div>
           </aside>
@@ -1249,12 +1301,38 @@
                 <div class="mini-badge">WASD</div>
                 <div class="mini-badge">Arrow Keys</div>
                 <div class="mini-badge">4 câu hỏi</div>
+                <div class="mini-badge">Touch Mobile</div>
               </div>
             </div>
+
             <div class="canvas-wrap">
               <canvas id="gameCanvas1" width="960" height="640"></canvas>
               <div id="toast1" class="map-toast">✨ Đã mở cửa sang màn 2!</div>
               <div id="flash1" class="flash-message"></div>
+            </div>
+
+            <div class="touch-controls glass" id="touchControls1">
+              <div class="touch-hint">Trên điện thoại: giữ các nút mũi tên để di chuyển nhân vật.</div>
+              <div class="touch-left">
+                <div class="dpad">
+                  <div class="spacer"></div>
+                  <button class="touch-btn" data-key="ArrowUp" aria-label="Lên">▲</button>
+                  <div class="spacer"></div>
+
+                  <button class="touch-btn" data-key="ArrowLeft" aria-label="Trái">◀</button>
+                  <div class="spacer"></div>
+                  <button class="touch-btn" data-key="ArrowRight" aria-label="Phải">▶</button>
+
+                  <div class="spacer"></div>
+                  <button class="touch-btn" data-key="ArrowDown" aria-label="Xuống">▼</button>
+                  <div class="spacer"></div>
+                </div>
+              </div>
+              <div class="touch-right">
+                <div class="touch-legend">
+                  Nhân vật sẽ đi khi T giữ nút. Đến ô sáng để mở câu hỏi tiếp theo.
+                </div>
+              </div>
             </div>
           </main>
         </div>
@@ -1270,16 +1348,10 @@
             <div class="hud-card">
               <h3>Tiến độ màn</h3>
               <div class="stats-grid">
-                <div class="stat">
-                  <span>Điểm</span><strong id="hudScore2">0</strong>
-                </div>
-                <div class="stat">
-                  <span>Đúng</span><strong id="hudCorrect2">0/4</strong>
-                </div>
+                <div class="stat"><span>Điểm</span><strong id="hudScore2">0</strong></div>
+                <div class="stat"><span>Đúng</span><strong id="hudCorrect2">0/4</strong></div>
                 <div class="stat"><span>Màn</span><strong>2 / 2</strong></div>
-                <div class="stat">
-                  <span>Tổng</span><strong id="hudTotal2">0/8</strong>
-                </div>
+                <div class="stat"><span>Tổng</span><strong id="hudTotal2">0/8</strong></div>
               </div>
               <div class="progress-wrap">
                 <div class="progress-bar">
@@ -1290,8 +1362,7 @@
             <div class="hud-card">
               <h3>Mục tiêu</h3>
               <p class="note">
-                Hoàn thành đủ 4 câu của màn này để tự động chuyển sang màn chiến
-                thắng.
+                Hoàn thành đủ 4 câu của màn này để tự động chuyển sang màn chiến thắng.
               </p>
             </div>
           </aside>
@@ -1303,14 +1374,38 @@
                 <div class="mini-badge">Màn cuối</div>
                 <div class="mini-badge">4 câu hỏi</div>
                 <div class="mini-badge">Cửa cuối</div>
+                <div class="mini-badge">Touch Mobile</div>
               </div>
             </div>
+
             <div class="canvas-wrap">
               <canvas id="gameCanvas2" width="960" height="640"></canvas>
-              <div id="toast2" class="map-toast">
-                🏆 Hoàn thành đủ 4 câu! Đến cửa cuối để chiến thắng.
-              </div>
+              <div id="toast2" class="map-toast">🏆 Hoàn thành đủ 4 câu! Đến cửa cuối để chiến thắng.</div>
               <div id="flash2" class="flash-message"></div>
+            </div>
+
+            <div class="touch-controls glass" id="touchControls2">
+              <div class="touch-hint">Trên điện thoại: giữ các nút mũi tên để di chuyển nhân vật.</div>
+              <div class="touch-left">
+                <div class="dpad">
+                  <div class="spacer"></div>
+                  <button class="touch-btn" data-key="ArrowUp" aria-label="Lên">▲</button>
+                  <div class="spacer"></div>
+
+                  <button class="touch-btn" data-key="ArrowLeft" aria-label="Trái">◀</button>
+                  <div class="spacer"></div>
+                  <button class="touch-btn" data-key="ArrowRight" aria-label="Phải">▶</button>
+
+                  <div class="spacer"></div>
+                  <button class="touch-btn" data-key="ArrowDown" aria-label="Xuống">▼</button>
+                  <div class="spacer"></div>
+                </div>
+              </div>
+              <div class="touch-right">
+                <div class="touch-legend">
+                  Hoàn thành đủ 4 câu, rồi đi vào cửa cuối để chiến thắng.
+                </div>
+              </div>
             </div>
           </main>
         </div>
@@ -1322,26 +1417,15 @@
             <div class="trophy">🏆</div>
             <h1 class="win-title">Chiến thắng!</h1>
             <p class="win-sub">
-              Chúc mừng <strong id="winPlayer">Người chơi</strong> đã hoàn thành
-              toàn bộ hành trình trắc nghiệm.
+              Chúc mừng <strong id="winPlayer">Người chơi</strong> đã hoàn thành toàn bộ hành trình trắc nghiệm.
             </p>
             <div class="win-grid">
-              <div class="win-box">
-                <small>Người chơi</small><strong id="winPlayerBox">—</strong>
-              </div>
-              <div class="win-box">
-                <small>Tổng điểm</small><strong id="winScore">0</strong>
-              </div>
-              <div class="win-box">
-                <small>Câu đúng</small><strong id="winCorrect">0/8</strong>
-              </div>
-              <div class="win-box">
-                <small>Hoàn thành</small><strong>100%</strong>
-              </div>
+              <div class="win-box"><small>Người chơi</small><strong id="winPlayerBox">—</strong></div>
+              <div class="win-box"><small>Tổng điểm</small><strong id="winScore">0</strong></div>
+              <div class="win-box"><small>Câu đúng</small><strong id="winCorrect">0/8</strong></div>
+              <div class="win-box"><small>Hoàn thành</small><strong>100%</strong></div>
             </div>
-            <button id="restartBtn" class="btn btn-primary">
-              Chơi lại từ đầu
-            </button>
+            <button id="restartBtn" class="btn btn-primary">Chơi lại từ đầu</button>
             <div class="footer-note">Bạn đã vượt qua tất cả thử thách.</div>
           </div>
         </div>
@@ -1363,8 +1447,7 @@
         {
           id: 1,
           stage: 1,
-          question:
-            "Trong các điểm sau, điểm nào thuộc đồ thị hàm số y = 2 - 4x?",
+          question: "Trong các điểm sau, điểm nào thuộc đồ thị hàm số y = 2 - 4x?",
           options: { A: "(1;1)", B: "(2;0)", C: "(1;-1)", D: "(1;-2)" },
           correct: "D",
         },
@@ -1404,8 +1487,7 @@
         {
           id: 6,
           stage: 2,
-          question:
-            "Nếu hai đường thẳng y = -2x + 3 và y = (m - 7)x - 1 song song với nhau thì giá trị của m bằng?",
+          question: "Nếu hai đường thẳng y = -2x + 3 và y = (m - 7)x - 1 song song với nhau thì giá trị của m bằng?",
           options: { A: "5", B: "-5", C: "9", D: "-9" },
           correct: "A",
         },
@@ -1593,6 +1675,7 @@
         state.modalLocked = false;
         state.lastZoneSoundId = null;
         state.questionAttempts = {};
+        state.keys = {};
         ui.backdrop.classList.remove("active");
         ui.questionResult.textContent = "";
         resetStage(1);
@@ -1607,8 +1690,7 @@
           unlockAudio();
           playWrongSound();
           ui.playerNameInput.focus();
-          ui.playerNameInput.style.boxShadow =
-            "0 0 0 3px rgba(255,124,152,0.22)";
+          ui.playerNameInput.style.boxShadow = "0 0 0 3px rgba(255,124,152,0.22)";
           ui.playerNameInput.style.borderRadius = "8px";
           alert("Vui lòng nhập tên người chơi trước khi bắt đầu.");
           setTimeout(() => {
@@ -1631,7 +1713,7 @@
           stageId,
           stageId === 1
             ? "🧭 Màn 1 bắt đầu! Hãy làm lần lượt từ Câu 1 đến Câu 4."
-            : "⚡ Màn 2 bắt đầu! Hoàn thành 4 câu cuối để đến chiến thắng.",
+            : "⚡ Màn 2 bắt đầu! Hoàn thành 4 câu cuối để đến chiến thắng."
         );
       }
 
@@ -1675,13 +1757,9 @@
         toast.textContent = message;
         toast.classList.add("show");
         clearTimeout(state.toastTimer[stageId]);
-        state.toastTimer[stageId] = setTimeout(
-          () => toast.classList.remove("show"),
-          2300,
-        );
+        state.toastTimer[stageId] = setTimeout(() => toast.classList.remove("show"), 2300);
       }
 
-      // ====== AUDIO ======
       let audioCtx = null;
       let activeWinNodes = [];
       let winStopTimer = null;
@@ -1700,14 +1778,7 @@
         }
       }
 
-      function tone(
-        freq,
-        duration = 0.08,
-        type = "sine",
-        volume = 0.03,
-        when = 0,
-        trackWin = false,
-      ) {
+      function tone(freq, duration = 0.08, type = "sine", volume = 0.03, when = 0, trackWin = false) {
         if (!state.audioEnabled || !audioCtx) return null;
 
         const now = audioCtx.currentTime + when;
@@ -1726,17 +1797,13 @@
         osc.start(now);
         osc.stop(now + duration + 0.03);
 
-        if (trackWin) {
-          activeWinNodes.push({ osc, gain });
-        }
-
+        if (trackWin) activeWinNodes.push({ osc, gain });
         return { osc, gain };
       }
 
       function stopWinSound() {
         clearTimeout(winStopTimer);
         if (!audioCtx) return;
-
         const now = audioCtx.currentTime;
         activeWinNodes.forEach((node) => {
           try {
@@ -1778,22 +1845,6 @@
         tone(700, 0.12, "triangle", 0.024, 0.1);
       }
 
-      function playWinSound() {
-        stopWinSound();
-
-        // Tổng thời lượng tối đa < 3 giây
-        tone(523.25, 0.28, "triangle", 0.024, 0.0, true);
-        tone(659.25, 0.3, "triangle", 0.022, 0.35, true);
-        tone(783.99, 0.34, "triangle", 0.022, 0.78, true);
-        tone(1046.5, 0.42, "triangle", 0.024, 1.2, true);
-        tone(783.99, 0.36, "triangle", 0.02, 1.72, true);
-        tone(1174.66, 0.48, "triangle", 0.022, 2.25, true);
-
-        winStopTimer = setTimeout(() => {
-          stopWinSound();
-        }, 300);
-      }
-
       function unlockDoorIfReady(stageId) {
         const stage = stageConfigs[stageId];
         if (!stage.door.unlocked && state.stageCorrect[stageId] === 4) {
@@ -1804,7 +1855,7 @@
             stageId,
             stageId === 1
               ? "🚪 Cửa đã mở! Hãy đi đến cửa để sang màn 2."
-              : "🏆 Cửa cuối đã mở! Hãy bước vào để chiến thắng.",
+              : "🏆 Cửa cuối đã mở! Hãy bước vào để chiến thắng."
           );
         }
       }
@@ -1816,10 +1867,7 @@
         if (!q) return;
 
         if (!state.questionAttempts[q.id]) {
-          state.questionAttempts[q.id] = {
-            firstTryUsed: false,
-            awarded: false,
-          };
+          state.questionAttempts[q.id] = { firstTryUsed: false, awarded: false };
         }
 
         playZoneSound();
@@ -1827,7 +1875,7 @@
         ui.backdrop.classList.add("active");
         ui.questionNo.textContent = `Câu ${q.id}`;
         ui.questionText.textContent = q.question;
-        ui.questionHelp.textContent = `Hãy trả lời theo thứ tự. Câu này chỉ được cộng điểm nếu đúng ngay lần chọn đầu tiên.`;
+        ui.questionHelp.textContent = "Hãy trả lời theo thứ tự. Câu này chỉ được cộng điểm nếu đúng ngay lần chọn đầu tiên.";
         ui.questionResult.textContent = "";
         ui.optionsGrid.innerHTML = "";
 
@@ -1842,10 +1890,7 @@
 
       function answerQuestion(question, choice, clickedButton) {
         if (state.modalLocked) return;
-        const attempt = state.questionAttempts[question.id] || {
-          firstTryUsed: false,
-          awarded: false,
-        };
+        const attempt = state.questionAttempts[question.id] || { firstTryUsed: false, awarded: false };
         state.questionAttempts[question.id] = attempt;
 
         if (choice === question.correct) {
@@ -1874,7 +1919,7 @@
             gained > 0
               ? `+10 điểm · Hoàn thành Câu ${question.id}`
               : `Hoàn thành Câu ${question.id} · Không cộng điểm`,
-            "success",
+            "success"
           );
 
           setTimeout(() => {
@@ -1894,7 +1939,7 @@
           showFlash(
             question.stage,
             `Sai rồi ở Câu ${question.id} · Câu này không còn cộng điểm`,
-            "error",
+            "error"
           );
           setTimeout(() => {
             clickedButton.classList.remove("wrong");
@@ -1905,22 +1950,12 @@
       }
 
       function rectsIntersect(a, b) {
-        return (
-          a.x < b.x + b.w &&
-          a.x + a.w > b.x &&
-          a.y < b.y + b.h &&
-          a.y + a.h > b.y
-        );
+        return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
       }
 
       function doorCollisionBox(door) {
         if (door.unlocked) {
-          return {
-            x: door.x + 8,
-            y: door.y + 12,
-            w: door.w - 16,
-            h: door.h - 20,
-          };
+          return { x: door.x + 8, y: door.y + 12, w: door.w - 16, h: door.h - 20 };
         }
         return { x: door.x, y: door.y, w: door.w, h: door.h };
       }
@@ -1932,15 +1967,9 @@
         const boxX = { x: nextX + 2, y: p.y + 2, w: p.size - 4, h: p.size - 2 };
         const boxY = { x: p.x + 2, y: nextY + 2, w: p.size - 4, h: p.size - 2 };
 
-        const doorBlock = !stage.door.unlocked
-          ? doorCollisionBox(stage.door)
-          : null;
-        const hitX =
-          stage.walls.some((w) => rectsIntersect(boxX, w)) ||
-          (doorBlock && rectsIntersect(boxX, doorBlock));
-        const hitY =
-          stage.walls.some((w) => rectsIntersect(boxY, w)) ||
-          (doorBlock && rectsIntersect(boxY, doorBlock));
+        const doorBlock = !stage.door.unlocked ? doorCollisionBox(stage.door) : null;
+        const hitX = stage.walls.some((w) => rectsIntersect(boxX, w)) || (doorBlock && rectsIntersect(boxX, doorBlock));
+        const hitY = stage.walls.some((w) => rectsIntersect(boxY, w)) || (doorBlock && rectsIntersect(boxY, doorBlock));
 
         if (!hitX) p.x = Math.max(0, Math.min(stage.width - p.size, nextX));
         if (!hitY) p.y = Math.max(0, Math.min(stage.height - p.size, nextY));
@@ -1990,22 +2019,13 @@
         if (moved) playMoveSound();
         tryMovePlayer(stage, dx, dy);
 
-        const playerBox = {
-          x: p.x + 2,
-          y: p.y + 2,
-          w: p.size - 4,
-          h: p.size - 2,
-        };
+        const playerBox = { x: p.x + 2, y: p.y + 2, w: p.size - 4, h: p.size - 2 };
         const nextQuestionId = getNextQuestionIdForStage(stageId);
-        if (state.lastZoneSoundId !== nextQuestionId)
-          state.lastZoneSoundId = null;
+        if (state.lastZoneSoundId !== nextQuestionId) state.lastZoneSoundId = null;
 
         for (const zone of stage.questionZones) {
           if (zone.questionId !== nextQuestionId) continue;
-          if (
-            !state.answered.has(zone.questionId) &&
-            rectsIntersect(playerBox, zone)
-          ) {
+          if (!state.answered.has(zone.questionId) && rectsIntersect(playerBox, zone)) {
             openQuestion(zone.questionId);
             state.lastZoneSoundId = zone.questionId;
             return;
@@ -2058,24 +2078,9 @@
         const openOffset = door.openAmount * (w * 0.42);
         const pulse = 0.78 + Math.sin(t * 0.008) * 0.12;
 
-        const glow = ctx.createRadialGradient(
-          x + w / 2,
-          y + h / 2,
-          10,
-          x + w / 2,
-          y + h / 2,
-          100,
-        );
-        glow.addColorStop(
-          0,
-          door.unlocked
-            ? `rgba(107,233,255,${0.36 * pulse})`
-            : "rgba(255,216,108,0.10)",
-        );
-        glow.addColorStop(
-          0.5,
-          door.unlocked ? "rgba(107,233,255,0.12)" : "rgba(255,255,255,0.05)",
-        );
+        const glow = ctx.createRadialGradient(x + w / 2, y + h / 2, 10, x + w / 2, y + h / 2, 100);
+        glow.addColorStop(0, door.unlocked ? `rgba(107,233,255,${0.36 * pulse})` : "rgba(255,216,108,0.10)");
+        glow.addColorStop(0.5, door.unlocked ? "rgba(107,233,255,0.12)" : "rgba(255,255,255,0.05)");
         glow.addColorStop(1, "rgba(107,233,255,0)");
         ctx.fillStyle = glow;
         ctx.beginPath();
@@ -2096,91 +2101,25 @@
         const panelH = h - 18;
 
         const panelGradA = ctx.createLinearGradient(x, y, x, y + h);
-        panelGradA.addColorStop(
-          0,
-          door.unlocked ? "rgba(147,242,255,0.80)" : "rgba(140,150,173,0.84)",
-        );
-        panelGradA.addColorStop(
-          1,
-          door.unlocked ? "rgba(72,179,236,0.68)" : "rgba(71,81,107,0.88)",
-        );
+        panelGradA.addColorStop(0, door.unlocked ? "rgba(147,242,255,0.80)" : "rgba(140,150,173,0.84)");
+        panelGradA.addColorStop(1, door.unlocked ? "rgba(72,179,236,0.68)" : "rgba(71,81,107,0.88)");
         ctx.fillStyle = panelGradA;
-        roundRect(
-          ctx,
-          x + 8 - openOffset,
-          y + 9,
-          leftPanelW,
-          panelH,
-          12,
-          true,
-          false,
-        );
+        roundRect(ctx, x + 8 - openOffset, y + 9, leftPanelW, panelH, 12, true, false);
 
         const panelGradB = ctx.createLinearGradient(x, y, x, y + h);
-        panelGradB.addColorStop(
-          0,
-          door.unlocked ? "rgba(147,242,255,0.80)" : "rgba(140,150,173,0.84)",
-        );
-        panelGradB.addColorStop(
-          1,
-          door.unlocked ? "rgba(72,179,236,0.68)" : "rgba(71,81,107,0.88)",
-        );
+        panelGradB.addColorStop(0, door.unlocked ? "rgba(147,242,255,0.80)" : "rgba(140,150,173,0.84)");
+        panelGradB.addColorStop(1, door.unlocked ? "rgba(72,179,236,0.68)" : "rgba(71,81,107,0.88)");
         ctx.fillStyle = panelGradB;
-        roundRect(
-          ctx,
-          x + w - 8 - leftPanelW + openOffset,
-          y + 9,
-          leftPanelW,
-          panelH,
-          12,
-          true,
-          false,
-        );
+        roundRect(ctx, x + w - 8 - leftPanelW + openOffset, y + 9, leftPanelW, panelH, 12, true, false);
 
         ctx.strokeStyle = "rgba(255,255,255,0.18)";
         ctx.lineWidth = 1.4;
-        roundRect(
-          ctx,
-          x + 8 - openOffset + 1,
-          y + 10,
-          leftPanelW - 2,
-          panelH - 2,
-          11,
-          false,
-          true,
-        );
-        roundRect(
-          ctx,
-          x + w - 8 - leftPanelW + openOffset + 1,
-          y + 10,
-          leftPanelW - 2,
-          panelH - 2,
-          11,
-          false,
-          true,
-        );
+        roundRect(ctx, x + 8 - openOffset + 1, y + 10, leftPanelW - 2, panelH - 2, 11, false, true);
+        roundRect(ctx, x + w - 8 - leftPanelW + openOffset + 1, y + 10, leftPanelW - 2, panelH - 2, 11, false, true);
 
         ctx.fillStyle = "rgba(255,255,255,0.10)";
-        roundRect(
-          ctx,
-          x + 15 - openOffset,
-          y + 18,
-          leftPanelW * 0.42,
-          10,
-          5,
-          true,
-          false,
-        );
-        roundRect(
-          ctx,
-          x + w - 15 - leftPanelW + openOffset,
-          y + 18,
-          leftPanelW * 0.42,
-          10,
-          5,
-          true,
-          false,
-        );
+        roundRect(ctx, x + 15 - openOffset, y + 18, leftPanelW * 0.42, 10, 5, true, false);
+        roundRect(ctx, x + w - 15 - leftPanelW + openOffset, y + 18, leftPanelW * 0.42, 10, 5, true, false);
 
         if (!door.unlocked || door.openAmount < 0.98) {
           ctx.fillStyle = "rgba(255,255,255,0.18)";
@@ -2194,25 +2133,20 @@
           ctx.arc(x + w / 2, y + 29, 10, Math.PI, 2 * Math.PI);
           ctx.stroke();
 
-          const lockBody = ctx.createLinearGradient(
-            x + w / 2 - 13,
-            y + 30,
-            x + w / 2 + 13,
-            y + 52,
-          );
+          const lockBody = ctx.createLinearGradient(x + w / 2 - 13, y + 30, x + w / 2 + 13, y + 52);
           lockBody.addColorStop(0, "#ffe7a8");
           lockBody.addColorStop(1, "#ffc857");
           ctx.fillStyle = lockBody;
           roundRect(ctx, x + w / 2 - 13, y + 30, 26, 24, 7, true, false);
 
           ctx.fillStyle = "#6f4f00";
-          ctx.font = "900 11px Inter, Arial";
+          ctx.font = "900 11px 'Be Vietnam Pro', Arial";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           ctx.fillText("LOCK", x + w / 2, y + 42);
         } else {
           ctx.fillStyle = "rgba(217,252,255,0.96)";
-          ctx.font = "900 14px Inter, Arial";
+          ctx.font = "900 14px 'Be Vietnam Pro', Arial";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           ctx.fillText("OPEN", x + w / 2, y + 24);
@@ -2240,22 +2174,10 @@
         for (let i = 0; i < 3; i++) {
           const y = 80 + i * 130 + Math.sin(t * 0.0012 + i * 1.8) * 24;
           const aurora = ctx.createLinearGradient(0, y, w, y + 70);
-          aurora.addColorStop(
-            0,
-            stageId === 1 ? "rgba(107,233,255,0.00)" : "rgba(173,120,255,0.00)",
-          );
-          aurora.addColorStop(
-            0.2,
-            stageId === 1 ? "rgba(107,233,255,0.09)" : "rgba(173,120,255,0.11)",
-          );
-          aurora.addColorStop(
-            0.55,
-            stageId === 1 ? "rgba(255,216,108,0.06)" : "rgba(107,233,255,0.08)",
-          );
-          aurora.addColorStop(
-            0.85,
-            stageId === 1 ? "rgba(138,125,255,0.08)" : "rgba(255,216,108,0.05)",
-          );
+          aurora.addColorStop(0, stageId === 1 ? "rgba(107,233,255,0.00)" : "rgba(173,120,255,0.00)");
+          aurora.addColorStop(0.2, stageId === 1 ? "rgba(107,233,255,0.09)" : "rgba(173,120,255,0.11)");
+          aurora.addColorStop(0.55, stageId === 1 ? "rgba(255,216,108,0.06)" : "rgba(107,233,255,0.08)");
+          aurora.addColorStop(0.85, stageId === 1 ? "rgba(138,125,255,0.08)" : "rgba(255,216,108,0.05)");
           aurora.addColorStop(1, "rgba(255,255,255,0.00)");
           ctx.fillStyle = aurora;
           ctx.beginPath();
@@ -2271,46 +2193,19 @@
         }
         ctx.restore();
 
-        const topGlow = ctx.createRadialGradient(
-          w * 0.18,
-          h * 0.08,
-          10,
-          w * 0.18,
-          h * 0.08,
-          w * 0.42,
-        );
-        topGlow.addColorStop(
-          0,
-          stageId === 1 ? "rgba(107,233,255,.18)" : "rgba(180,120,255,.20)",
-        );
+        const topGlow = ctx.createRadialGradient(w * 0.18, h * 0.08, 10, w * 0.18, h * 0.08, w * 0.42);
+        topGlow.addColorStop(0, stageId === 1 ? "rgba(107,233,255,.18)" : "rgba(180,120,255,.20)");
         topGlow.addColorStop(1, "rgba(0,0,0,0)");
         ctx.fillStyle = topGlow;
         ctx.fillRect(0, 0, w, h);
 
-        const bottomGlow = ctx.createRadialGradient(
-          w * 0.88,
-          h * 0.88,
-          10,
-          w * 0.88,
-          h * 0.88,
-          w * 0.32,
-        );
-        bottomGlow.addColorStop(
-          0,
-          stageId === 1 ? "rgba(255,216,108,.12)" : "rgba(107,233,255,.12)",
-        );
+        const bottomGlow = ctx.createRadialGradient(w * 0.88, h * 0.88, 10, w * 0.88, h * 0.88, w * 0.32);
+        bottomGlow.addColorStop(0, stageId === 1 ? "rgba(255,216,108,.12)" : "rgba(107,233,255,.12)");
         bottomGlow.addColorStop(1, "rgba(0,0,0,0)");
         ctx.fillStyle = bottomGlow;
         ctx.fillRect(0, 0, w, h);
 
-        const vignette = ctx.createRadialGradient(
-          w / 2,
-          h / 2,
-          h * 0.18,
-          w / 2,
-          h / 2,
-          h * 0.82,
-        );
+        const vignette = ctx.createRadialGradient(w / 2, h / 2, h * 0.18, w / 2, h / 2, h * 0.82);
         vignette.addColorStop(0, "rgba(255,255,255,0)");
         vignette.addColorStop(1, "rgba(0,0,0,0.28)");
         ctx.fillStyle = vignette;
@@ -2318,32 +2213,20 @@
 
         ctx.save();
         for (let x = 0; x < w; x += 40) {
-          ctx.fillStyle =
-            x % 120 === 0 ? "rgba(255,255,255,0.11)" : "rgba(255,255,255,0.06)";
+          ctx.fillStyle = x % 120 === 0 ? "rgba(255,255,255,0.11)" : "rgba(255,255,255,0.06)";
           ctx.fillRect(x, 0, x % 120 === 0 ? 1.4 : 1, h);
         }
         for (let y = 0; y < h; y += 40) {
-          ctx.fillStyle =
-            y % 120 === 0 ? "rgba(255,255,255,0.11)" : "rgba(255,255,255,0.06)";
+          ctx.fillStyle = y % 120 === 0 ? "rgba(255,255,255,0.11)" : "rgba(255,255,255,0.06)";
           ctx.fillRect(0, y, w, y % 120 === 0 ? 1.4 : 1);
         }
         ctx.restore();
 
         for (let i = 0; i < 34; i++) {
-          const px =
-            ((i * 137 + t * (0.014 + (i % 4) * 0.002)) % (w + 160)) - 80;
-          const py =
-            (i * 83 + Math.sin(t * 0.0011 + i * 0.8) * 80 + h * 0.38 + i * 9) %
-            h;
+          const px = ((i * 137 + t * (0.014 + (i % 4) * 0.002)) % (w + 160)) - 80;
+          const py = (i * 83 + Math.sin(t * 0.0011 + i * 0.8) * 80 + h * 0.38 + i * 9) % h;
           const radius = 10 + (i % 4) * 4;
-          const mist = ctx.createRadialGradient(
-            px,
-            py,
-            0,
-            px,
-            py,
-            radius * 2.2,
-          );
+          const mist = ctx.createRadialGradient(px, py, 0, px, py, radius * 2.2);
           mist.addColorStop(0, "rgba(255,255,255,0.16)");
           mist.addColorStop(0.45, "rgba(255,255,255,0.06)");
           mist.addColorStop(1, "rgba(255,255,255,0)");
@@ -2354,32 +2237,13 @@
         }
 
         stage.walls.forEach((wall) => {
-          const wallGlow = ctx.createLinearGradient(
-            wall.x,
-            wall.y,
-            wall.x + wall.w,
-            wall.y + wall.h,
-          );
+          const wallGlow = ctx.createLinearGradient(wall.x, wall.y, wall.x + wall.w, wall.y + wall.h);
           wallGlow.addColorStop(0, "rgba(251,113,133,0.22)");
           wallGlow.addColorStop(1, "rgba(138,125,255,0.20)");
           ctx.fillStyle = wallGlow;
-          roundRect(
-            ctx,
-            wall.x - 4,
-            wall.y - 4,
-            wall.w + 8,
-            wall.h + 8,
-            15,
-            true,
-            false,
-          );
+          roundRect(ctx, wall.x - 4, wall.y - 4, wall.w + 8, wall.h + 8, 15, true, false);
 
-          const wallGrad = ctx.createLinearGradient(
-            wall.x,
-            wall.y,
-            wall.x + wall.w,
-            wall.y + wall.h,
-          );
+          const wallGrad = ctx.createLinearGradient(wall.x, wall.y, wall.x + wall.w, wall.y + wall.h);
           wallGrad.addColorStop(0, "rgba(255, 140, 164, 0.94)");
           wallGrad.addColorStop(0.5, "rgba(211, 125, 225, 0.88)");
           wallGrad.addColorStop(1, "rgba(110, 105, 255, 0.84)");
@@ -2387,23 +2251,12 @@
           roundRect(ctx, wall.x, wall.y, wall.w, wall.h, 12, true, false);
           ctx.strokeStyle = "rgba(255,255,255,0.14)";
           ctx.lineWidth = 1.6;
-          roundRect(
-            ctx,
-            wall.x + 1,
-            wall.y + 1,
-            wall.w - 2,
-            wall.h - 2,
-            11,
-            false,
-            true,
-          );
+          roundRect(ctx, wall.x + 1, wall.y + 1, wall.w - 2, wall.h - 2, 11, false, true);
           ctx.fillStyle = "rgba(255,255,255,0.10)";
           if (wall.w > wall.h) {
-            for (let x = wall.x + 12; x < wall.x + wall.w - 12; x += 20)
-              ctx.fillRect(x, wall.y + 7, 10, 2);
+            for (let x = wall.x + 12; x < wall.x + wall.w - 12; x += 20) ctx.fillRect(x, wall.y + 7, 10, 2);
           } else {
-            for (let y = wall.y + 12; y < wall.y + wall.h - 12; y += 20)
-              ctx.fillRect(wall.x + 7, y, 2, 10);
+            for (let y = wall.y + 12; y < wall.y + wall.h - 12; y += 20) ctx.fillRect(wall.x + 7, y, 2, 10);
           }
         });
 
@@ -2418,7 +2271,7 @@
             4,
             zone.x + zone.w / 2,
             zone.y + zone.h / 2,
-            74,
+            74
           );
           outerGlow.addColorStop(
             0,
@@ -2426,7 +2279,7 @@
               ? "rgba(74,222,128,0.62)"
               : isActive
                 ? `rgba(255,216,107,${0.62 * pulse})`
-                : "rgba(255,255,255,0.08)",
+                : "rgba(255,255,255,0.08)"
           );
           outerGlow.addColorStop(
             0.5,
@@ -2434,7 +2287,7 @@
               ? "rgba(74,222,128,0.16)"
               : isActive
                 ? "rgba(255,216,107,0.18)"
-                : "rgba(255,255,255,0.04)",
+                : "rgba(255,255,255,0.04)"
           );
           outerGlow.addColorStop(1, "rgba(255,216,107,0)");
           ctx.fillStyle = outerGlow;
@@ -2442,12 +2295,7 @@
           ctx.arc(zone.x + zone.w / 2, zone.y + zone.h / 2, 74, 0, Math.PI * 2);
           ctx.fill();
 
-          const qGrad = ctx.createLinearGradient(
-            zone.x,
-            zone.y,
-            zone.x + zone.w,
-            zone.y + zone.h,
-          );
+          const qGrad = ctx.createLinearGradient(zone.x, zone.y, zone.x + zone.w, zone.y + zone.h);
           if (solved) {
             qGrad.addColorStop(0, "rgba(152, 255, 184, 0.96)");
             qGrad.addColorStop(1, "rgba(84, 218, 129, 0.94)");
@@ -2460,34 +2308,14 @@
           }
           ctx.fillStyle = qGrad;
           roundRect(ctx, zone.x, zone.y, zone.w, zone.h, 20, true, false);
-          ctx.strokeStyle =
-            solved || isActive
-              ? "rgba(255,255,255,.38)"
-              : "rgba(255,255,255,.16)";
+          ctx.strokeStyle = solved || isActive ? "rgba(255,255,255,.38)" : "rgba(255,255,255,.16)";
           ctx.lineWidth = 1.6;
-          roundRect(
-            ctx,
-            zone.x + 1,
-            zone.y + 1,
-            zone.w - 2,
-            zone.h - 2,
-            18,
-            false,
-            true,
-          );
-          ctx.fillStyle = solved
-            ? "#0f3320"
-            : isActive
-              ? "#4b3800"
-              : "rgba(255,255,255,0.72)";
-          ctx.font = "bold 22px Inter, Arial";
+          roundRect(ctx, zone.x + 1, zone.y + 1, zone.w - 2, zone.h - 2, 18, false, true);
+          ctx.fillStyle = solved ? "#0f3320" : isActive ? "#4b3800" : "rgba(255,255,255,0.72)";
+          ctx.font = "bold 22px 'Be Vietnam Pro', Arial";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
-          ctx.fillText(
-            solved ? "✓" : isActive ? "?" : "🔒",
-            zone.x + zone.w / 2,
-            zone.y + zone.h / 2 + 1,
-          );
+          ctx.fillText(solved ? "✓" : isActive ? "?" : "🔒", zone.x + zone.w / 2, zone.y + zone.h / 2 + 1);
         });
 
         drawDoor(ctx, stage.door, t);
@@ -2518,10 +2346,9 @@
             state.keys["D"]) &&
           state.currentStageId !== null &&
           !state.activeQuestion;
+
         const walkPhase = t * 0.03;
-        const bounce = moving
-          ? Math.sin(walkPhase) * 1.4
-          : Math.sin(t * 0.01) * 0.5;
+        const bounce = moving ? Math.sin(walkPhase) * 1.4 : Math.sin(t * 0.01) * 0.5;
         const cx = p.x + size / 2;
         const cy = p.y + size / 2 + bounce;
         const r = size / 2;
@@ -2529,14 +2356,7 @@
         const legSwing = moving ? Math.sin(walkPhase) * 3.8 : 0;
         const armSwing = moving ? Math.sin(walkPhase) * 2.8 : 0;
 
-        const shadow = ctx.createRadialGradient(
-          cx,
-          p.y + size + 8,
-          1,
-          cx,
-          p.y + size + 8,
-          r * 1.2,
-        );
+        const shadow = ctx.createRadialGradient(cx, p.y + size + 8, 1, cx, p.y + size + 8, r * 1.2);
         shadow.addColorStop(0, "rgba(0,0,0,.30)");
         shadow.addColorStop(1, "rgba(0,0,0,0)");
         ctx.fillStyle = shadow;
@@ -2589,59 +2409,18 @@
 
         ctx.strokeStyle = "rgba(255,255,255,.90)";
         ctx.lineWidth = 1.5;
-        roundRect(
-          ctx,
-          cx - r + 0.8,
-          cy - r + 0.8,
-          size - 1.6,
-          size - 1.6,
-          7,
-          false,
-          true,
-        );
+        roundRect(ctx, cx - r + 0.8, cy - r + 0.8, size - 1.6, size - 1.6, 7, false, true);
 
         ctx.fillStyle = "rgba(255,255,255,.54)";
-        roundRect(
-          ctx,
-          cx - r + size * 0.12,
-          cy - r + size * 0.11,
-          size * 0.38,
-          size * 0.18,
-          4,
-          true,
-          false,
-        );
+        roundRect(ctx, cx - r + size * 0.12, cy - r + size * 0.11, size * 0.38, size * 0.18, 4, true, false);
         ctx.fillStyle = "rgba(255,255,255,.18)";
-        roundRect(
-          ctx,
-          cx - r + size * 0.16,
-          cy + size * 0.12,
-          size * 0.58,
-          size * 0.5,
-          5,
-          true,
-          false,
-        );
+        roundRect(ctx, cx - r + size * 0.16, cy + size * 0.12, size * 0.58, size * 0.5, 5, true, false);
 
-        const crown = ctx.createLinearGradient(
-          cx - size * 0.18,
-          cy - r - 4,
-          cx + size * 0.18,
-          cy - r,
-        );
+        const crown = ctx.createLinearGradient(cx - size * 0.18, cy - r - 4, cx + size * 0.18, cy - r);
         crown.addColorStop(0, "#ffea96");
         crown.addColorStop(1, "#ffc857");
         ctx.fillStyle = crown;
-        roundRect(
-          ctx,
-          cx - size * 0.18,
-          cy - r - 4,
-          size * 0.36,
-          4.8,
-          2.4,
-          true,
-          false,
-        );
+        roundRect(ctx, cx - size * 0.18, cy - r - 4, size * 0.36, 4.8, 2.4, true, false);
 
         const eyeOffsetX = size * 0.18;
         const eyeY = cy - size * 0.05;
@@ -2666,14 +2445,70 @@
         ctx.lineWidth = 1.9;
         ctx.lineCap = "round";
         ctx.beginPath();
-        ctx.arc(
-          cx,
-          cy + size * 0.13,
-          size * 0.18,
-          0.15 * Math.PI,
-          0.85 * Math.PI,
-        );
+        ctx.arc(cx, cy + size * 0.13, size * 0.18, 0.15 * Math.PI, 0.85 * Math.PI);
         ctx.stroke();
+      }
+
+      function setupTouchControls() {
+        const buttons = document.querySelectorAll(".touch-btn");
+
+        function releaseKey(key, btn) {
+          state.keys[key] = false;
+          if (btn) btn.classList.remove("active");
+        }
+
+        function pressKey(key, btn) {
+          unlockAudio();
+          state.keys[key] = true;
+          if (btn) btn.classList.add("active");
+        }
+
+        buttons.forEach((btn) => {
+          const key = btn.dataset.key;
+
+          btn.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            pressKey(key, btn);
+          }, { passive: false });
+
+          btn.addEventListener("touchend", (e) => {
+            e.preventDefault();
+            releaseKey(key, btn);
+          }, { passive: false });
+
+          btn.addEventListener("touchcancel", (e) => {
+            e.preventDefault();
+            releaseKey(key, btn);
+          }, { passive: false });
+
+          btn.addEventListener("mousedown", (e) => {
+            e.preventDefault();
+            pressKey(key, btn);
+          });
+
+          btn.addEventListener("mouseup", (e) => {
+            e.preventDefault();
+            releaseKey(key, btn);
+          });
+
+          btn.addEventListener("mouseleave", () => {
+            releaseKey(key, btn);
+          });
+        });
+
+        document.addEventListener("touchend", () => {
+          ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].forEach((key) => {
+            state.keys[key] = false;
+          });
+          document.querySelectorAll(".touch-btn.active").forEach((btn) => btn.classList.remove("active"));
+        });
+
+        document.addEventListener("mouseup", () => {
+          ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].forEach((key) => {
+            state.keys[key] = false;
+          });
+          document.querySelectorAll(".touch-btn.active").forEach((btn) => btn.classList.remove("active"));
+        });
       }
 
       function loop(t = 0) {
@@ -2687,17 +2522,24 @@
       window.addEventListener("keydown", (e) => {
         unlockAudio();
         state.keys[e.key] = true;
-        if (
-          ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(
-            e.key,
-          )
-        )
+        if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(e.key)) {
           e.preventDefault();
+        }
         if (e.key === "Enter" && state.currentScreen === "home") startGame();
       });
 
       window.addEventListener("keyup", (e) => {
         state.keys[e.key] = false;
+      });
+
+      window.addEventListener("blur", () => {
+        state.keys = {};
+        document.querySelectorAll(".touch-btn.active").forEach((btn) => btn.classList.remove("active"));
+      });
+
+      document.querySelectorAll("canvas").forEach((canvas) => {
+        canvas.addEventListener("touchstart", (e) => e.preventDefault(), { passive: false });
+        canvas.addEventListener("touchmove", (e) => e.preventDefault(), { passive: false });
       });
 
       ui.startBtn.addEventListener("click", startGame);
@@ -2708,6 +2550,7 @@
         resetGame();
       });
 
+      setupTouchControls();
       updateHUD();
       loop();
     </script>
