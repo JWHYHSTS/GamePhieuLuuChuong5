@@ -1,1715 +1,2715 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Phiêu Lưu Ôn Tập Chương 5</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <style>
-    :root {
-      --bg-1: #061426;
-      --bg-2: #0b1d35;
-      --bg-3: #121f49;
-      --panel: rgba(14, 24, 46, 0.72);
-      --panel-2: rgba(18, 31, 58, 0.82);
-      --line: rgba(255,255,255,0.11);
-      --text: #eef8ff;
-      --muted: #a9bdd5;
-      --accent: #6be9ff;
-      --accent-2: #8a7dff;
-      --gold: #ffd86c;
-      --pink: #ff8aa1;
-      --success: #69e58f;
-      --danger: #ff7c98;
-      --shadow: 0 24px 60px rgba(0,0,0,0.34);
-      --radius-xl: 30px;
-      --radius-lg: 22px;
-      --radius-md: 16px;
-    }
-
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      height: 100%;
-      font-family: Inter, Arial, Helvetica, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 15% 10%, rgba(107,233,255,0.16), transparent 25%),
-        radial-gradient(circle at 82% 8%, rgba(138,125,255,0.20), transparent 28%),
-        radial-gradient(circle at 80% 85%, rgba(255,216,108,0.10), transparent 24%),
-        linear-gradient(135deg, var(--bg-1), var(--bg-2) 48%, var(--bg-3));
-      overflow: hidden;
-    }
-
-    body::before,
-    body::after {
-      content: "";
-      position: fixed;
-      inset: auto;
-      width: 42vmax;
-      height: 42vmax;
-      border-radius: 999px;
-      filter: blur(70px);
-      opacity: 0.18;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    body::before {
-      left: -14vmax;
-      top: -10vmax;
-      background: #6be9ff;
-    }
-
-    body::after {
-      right: -14vmax;
-      bottom: -12vmax;
-      background: #8a7dff;
-    }
-
-    .app {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      height: 100%;
-    }
-
-    .screen {
-      position: absolute;
-      inset: 0;
-      display: none;
-      padding: 26px;
-      animation: fadeIn .4s ease;
-    }
-
-    .screen.active {
-      display: flex;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.988); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    .glass {
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03)),
-        linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-    }
-
-    .home-layout {
-      width: min(1600px, 100%);
-      height: min(92vh, 980px);
-      margin: auto;
-      display: grid;
-      grid-template-columns: 0.95fr 1.1fr 0.95fr;
-      gap: 24px;
-      align-items: stretch;
-    }
-
-    .home-card, .play-shell, .sidebar, .question-modal, .win-card {
-      border-radius: var(--radius-xl);
-    }
-
-    .home-card {
-      padding: 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      min-height: 0;
-      height: 100%;
-      position: relative;
-      overflow: hidden;
-      justify-content: center;
-    }
-
-    .home-card::before {
-      content: "";
-      position: absolute;
-      right: -80px;
-      bottom: -80px;
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,.12), transparent 62%);
-      pointer-events: none;
-    }
-
-    .home-section-title {
-      font-size: 15px;
-      font-weight: 900;
-      letter-spacing: .10em;
-      text-transform: uppercase;
-      color: #d6ecff;
-      margin-bottom: 2px;
-    }
-
-    .home-section-text {
-      color: var(--muted);
-      line-height: 1.8;
-      font-size: 18px;
-    }
-
-    .bullet-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 8px;
-    }
-
-    .bullet-item {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      color: #dcecff;
-      line-height: 1.65;
-      font-size: 17px;
-    }
-
-    .bullet-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      margin-top: 9px;
-      flex: 0 0 auto;
-      background: linear-gradient(135deg, var(--gold), #ffb25a);
-      box-shadow: 0 0 18px rgba(255,216,108,.5);
-    }
-
-    .badge {
-      align-self: center;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 999px;
-      padding: 10px 18px;
-      color: var(--gold);
-      background: linear-gradient(135deg, rgba(255,216,108,0.16), rgba(255,255,255,0.04));
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 10px 30px rgba(0,0,0,.16);
-      font-weight: 800;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      font-size: 12px;
-    }
-
-    .hero-center {
-      text-align: center;
-      justify-content: center;
-      align-items: center;
-      padding-inline: 34px;
-    }
-
-    .title {
-      font-size: clamp(40px, 6vw, 82px);
-      line-height: .92;
-      letter-spacing: -0.055em;
-      font-weight: 1000;
-      margin: 6px 0 2px;
-      background: linear-gradient(135deg, #ffffff 0%, #dffdff 22%, #9ff6ff 48%, #d9c2ff 74%, #fff4c7 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-shadow: 0 10px 40px rgba(92,225,230,0.10);
-      filter: drop-shadow(0 10px 24px rgba(0,0,0,0.20));
-    }
-
-    .hero-subtitle {
-      color: #d2e8ff;
-      font-size: 19px;
-      line-height: 1.8;
-      max-width: 22ch;
-      margin: 6px auto 8px;
-    }
-
-    .name-box {
-      width: 100%;
-      max-width: 420px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 18px;
-      border-radius: 18px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
-      margin-top: 12px;
-    }
-
-    .name-box input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: var(--text);
-      font-size: 18px;
-    }
-
-    .name-box input::placeholder { color: #9db3ca; }
-
-    .btn {
-      appearance: none;
-      border: none;
-      cursor: pointer;
-      padding: 16px 24px;
-      border-radius: 18px;
-      color: white;
-      font-weight: 900;
-      font-size: 18px;
-      letter-spacing: .01em;
-      transition: transform .18s ease, box-shadow .18s ease;
-      box-shadow: 0 14px 28px rgba(0,0,0,.22);
-    }
-
-    .btn:hover { transform: translateY(-2px); }
-    .btn:active { transform: translateY(0); }
-
-    .btn-primary {
-      margin-top: 16px;
-      background: linear-gradient(135deg, var(--accent), #79caff);
-      color: #072235;
-      min-width: 250px;
-    }
-
-    .play-layout {
-      width: min(1600px, 100%);
-      height: min(92vh, 980px);
-      margin: auto;
-      display: grid;
-      grid-template-columns: 310px 1fr;
-      gap: 20px;
-      align-items: stretch;
-    }
-
-    .sidebar {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .hud-card {
-      border-radius: 22px;
-      padding: 16px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
-    }
-
-    .hud-card h3 {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: .09em;
-      color: var(--muted);
-      margin: 0 0 10px;
-    }
-
-    .player-name {
-      font-size: 28px;
-      font-weight: 900;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      background: linear-gradient(135deg, #ffffff, #bfefff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      word-break: break-word;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .stat {
-      padding: 14px;
-      border-radius: 16px;
-      background: rgba(0,0,0,.16);
-      border: 1px solid rgba(255,255,255,.06);
-    }
-
-    .stat span {
-      display: block;
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-    }
-
-    .stat strong {
-      font-size: 24px;
-      font-weight: 900;
-    }
-
-    .progress-wrap { margin-top: 12px; }
-
-    .progress-bar {
-      width: 100%;
-      height: 15px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--gold), #ffaf63);
-      box-shadow: 0 0 18px rgba(255,216,108,.42);
-      transition: width .35s ease;
-    }
-
-    .note {
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 15px;
-    }
-
-    .play-shell {
-      position: relative;
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)),
-        radial-gradient(circle at 0% 0%, rgba(92,225,230,0.10), transparent 24%),
-        radial-gradient(circle at 100% 100%, rgba(124,92,255,0.12), transparent 28%);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 20px 50px rgba(0,0,0,0.28);
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .map-title {
-      font-size: 30px;
-      font-weight: 1000;
-      letter-spacing: -0.04em;
-      line-height: 1.02;
-      background: linear-gradient(135deg, #ffffff 0%, #d8fbff 32%, #bcefff 52%, #ffe9ff 78%, #ffffff 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-shadow: 0 0 18px rgba(92,225,230,0.10), 0 10px 30px rgba(0,0,0,0.22);
-      filter: drop-shadow(0 6px 16px rgba(92,225,230,0.08));
-    }
-
-    .mini-badges {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .mini-badge {
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-weight: 800;
-      font-size: 12px;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      color: #d9f6ff;
-    }
-
-    .canvas-wrap {
-      position: relative;
-      flex: 1;
-      min-height: 0;
-      height: 100%;
-      border-radius: 30px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.12);
-      background:
-        radial-gradient(circle at 20% 0%, rgba(255,255,255,.08), transparent 28%),
-        radial-gradient(circle at 80% 100%, rgba(124,92,255,.12), transparent 24%),
-        linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.12));
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03), inset 0 30px 80px rgba(255,255,255,.03), 0 24px 60px rgba(0,0,0,.25);
-    }
-
-    canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-      background: transparent;
-    }
-
-    .map-toast,
-    .flash-message {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 4;
-      border-radius: 16px;
-      padding: 12px 18px;
-      backdrop-filter: blur(12px);
-      background: rgba(6, 17, 29, 0.74);
-      border: 1px solid rgba(255,255,255,.10);
-      box-shadow: var(--shadow);
-      text-align: center;
-    }
-
-    .map-toast {
-      top: 18px;
-      font-weight: 900;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .25s ease, transform .25s ease;
-    }
-
-    .map-toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(4px);
-    }
-
-    .flash-message {
-      top: 74px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .2s ease;
-      font-weight: 900;
-    }
-
-    .flash-message.show { opacity: 1; }
-    .flash-success { color: #c4ffd9; border-color: rgba(74,222,128,.35); }
-    .flash-error { color: #ffd0d8; border-color: rgba(255,124,152,.35); }
-
-    .question-modal-backdrop {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background: rgba(1, 8, 16, 0.68);
-      backdrop-filter: blur(7px);
-      z-index: 20;
-    }
-
-    .question-modal-backdrop.active { display: flex; }
-
-    .question-modal {
-      width: min(860px, 100%);
-      padding: 30px;
-      background: linear-gradient(180deg, rgba(18,34,57,.96), rgba(11,24,43,.96));
-      border: 1px solid rgba(255,255,255,.14);
-      box-shadow: 0 30px 80px rgba(0,0,0,.45);
-    }
-
-    .question-chip {
-      display: inline-flex;
-      border-radius: 999px;
-      padding: 9px 14px;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: var(--gold);
-      background: rgba(255,216,107,.08);
-      border: 1px solid rgba(255,216,107,.22);
-      font-weight: 900;
-      margin-bottom: 12px;
-    }
-
-    .question-title {
-      font-size: clamp(24px, 3.2vw, 34px);
-      line-height: 1.45;
-      margin: 0 0 16px;
-      color: #ffffff;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.25);
-      font-weight: 900;
-    }
-
-    .question-sub {
-      color: #c7d9ea;
-      line-height: 1.75;
-      margin-bottom: 18px;
-      font-size: 16px;
-    }
-
-    .options-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-
-    .option-btn {
-      text-align: left;
-      padding: 18px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-      color: var(--text);
-      cursor: pointer;
-      transition: transform .16s ease, border-color .16s ease, background .16s ease, box-shadow .16s ease;
-      font-size: 18px;
-      line-height: 1.65;
-      font-weight: 800;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
-    }
-
-    .option-btn:hover {
-      transform: translateY(-2px);
-      border-color: rgba(107,233,255,.5);
-      background: rgba(107,233,255,.10);
-      box-shadow: 0 12px 24px rgba(0,0,0,.20);
-    }
-
-    .option-btn.correct {
-      background: rgba(105,229,143,.16);
-      border-color: rgba(105,229,143,.62);
-      color: #dbffea;
-    }
-
-    .option-btn.wrong {
-      background: rgba(255,124,152,.16);
-      border-color: rgba(255,124,152,.62);
-      color: #ffd9e1;
-    }
-
-    .question-result {
-      min-height: 38px;
-      margin-top: 18px;
-      font-weight: 900;
-      font-size: 20px;
-      letter-spacing: .01em;
-    }
-
-    .win-wrap {
-      width: min(900px, 100%);
-      margin: auto;
-    }
-
-    .win-card {
-      padding: 36px;
-      text-align: center;
-    }
-
-    .trophy {
-      width: 120px;
-      height: 120px;
-      margin: 0 auto 18px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%, #fff4c4, #ffd86b 40%, #ffb347 82%);
-      color: #5d3300;
-      font-size: 58px;
-      box-shadow: 0 12px 34px rgba(255,194,65,.35);
-    }
-
-    .win-title {
-      font-size: clamp(36px, 6vw, 66px);
-      letter-spacing: -0.04em;
-      margin: 0 0 10px;
-    }
-
-    .win-sub {
-      color: var(--muted);
-      font-size: 18px;
-      line-height: 1.7;
-      max-width: 50ch;
-      margin: 0 auto 24px;
-    }
-
-    .win-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin: 24px 0 28px;
-    }
-
-    .win-box {
-      padding: 18px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,.08);
-    }
-
-    .win-box small {
-      display: block;
-      color: var(--muted);
-      margin-bottom: 8px;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-    }
-
-    .win-box strong {
-      font-size: 24px;
-      font-weight: 900;
-    }
-
-    .footer-note {
-      color: var(--muted);
-      margin-top: 18px;
-      font-size: 14px;
-    }
-
-    @media (max-width: 1180px) {
-      .home-layout { grid-template-columns: 1fr; height: auto; }
-      .play-layout { grid-template-columns: 1fr; height: auto; }
-      .screen { padding: 16px; }
-      .home-card { min-height: auto; height: auto; }
-    }
-      .screen { padding: 16px; }
-      .home-card { min-height: auto; }
-    }
-
-    @media (max-width: 980px) {
-      .canvas-wrap { min-height: 420px; }
-      .win-grid, .options-grid, .stats-grid { grid-template-columns: 1fr 1fr; }
-    }
-      .canvas-wrap { min-height: 420px; }
-      .win-grid, .options-grid, .stats-grid { grid-template-columns: 1fr 1fr; }
-    }
-
-    @media (max-width: 640px) {
-      .options-grid, .stats-grid, .win-grid { grid-template-columns: 1fr; }
-      .canvas-wrap { min-height: 340px; }
-      .title { font-size: 54px; }
-      .map-title { font-size: 24px; }
-    }
-      .canvas-wrap { min-height: 340px; }
-      .title { font-size: 54px; }
-      .map-title { font-size: 24px; }
-    }
-  </style>
-</head>
-<body>
-  <div class="app">
-    <section id="screen-home" class="screen active">
-      <div class="home-layout">
-        <div class="home-card glass">
-          <div class="home-section-title">Hướng dẫn chơi</div>
-          <div class="home-section-text">Di chuyển nhân vật bằng <strong>W A S D</strong> hoặc <strong>phím mũi tên</strong>. Hãy đi đến ô câu hỏi đang được mở để trả lời theo đúng thứ tự.</div>
-          <div class="bullet-list">
-            <div class="bullet-item"><span class="bullet-dot"></span><span>Đi tới ô câu hỏi đang sáng để mở câu hỏi tiếp theo.</span></div>
-            <div class="bullet-item"><span class="bullet-dot"></span><span>Nếu trả lời đúng ngay lần đầu, bạn nhận <strong>+10 điểm</strong>.</span></div>
-            <div class="bullet-item"><span class="bullet-dot"></span><span>Nếu trả lời sai rồi mới đúng, câu đó vẫn được qua nhưng <strong>không cộng điểm</strong>.</span></div>
-            <div class="bullet-item"><span class="bullet-dot"></span><span>Làm đủ 4 câu ở mỗi màn để mở cánh cửa đi tiếp.</span></div>
-          </div>
-          <div style="display:grid; gap:12px; margin-top:8px;">
-            <div style="padding:14px 16px; border-radius:18px; background:linear-gradient(135deg, rgba(107,233,255,0.10), rgba(255,255,255,0.03)); border:1px solid rgba(107,233,255,0.18);">
-              <div style="font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:#a8ddf0; margin-bottom:6px;">Mẹo chơi</div>
-              <div style="font-size:16px; line-height:1.7; color:#e8f7ff;">Quan sát ô nào đang sáng rõ nhất. Đó là câu hỏi đang được phép làm.</div>
-            </div>
-            <div style="padding:14px 16px; border-radius:18px; background:linear-gradient(135deg, rgba(255,216,108,0.10), rgba(255,255,255,0.03)); border:1px solid rgba(255,216,108,0.18);">
-              <div style="font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:#ffe39c; margin-bottom:6px;">Điểm số</div>
-              <div style="font-size:16px; line-height:1.7; color:#fff7df;">Chỉ cộng điểm khi trả lời đúng ngay lần chọn đầu tiên của mỗi câu.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="home-card glass hero-center">
-          <div class="badge">✨ Mini game học tập phiêu lưu</div>
-          <h1 class="title">Phiêu Lưu Ôn Tập Chương 5</h1>
-          <p class="hero-subtitle">Nhập tên người chơi để bắt đầu hành trình chinh phục 8 câu hỏi.</p>
-          <label class="name-box">
-            <span>👤</span>
-            <input id="playerNameInput" type="text" maxlength="24" placeholder="Nhập tên người chơi" />
-          </label>
-          <button id="startBtn" class="btn btn-primary">Bắt đầu phiêu lưu</button>
-        </div>
-
-        <div class="home-card glass">
-          <div class="home-section-title">Luật chơi</div>
-          <div class="home-section-text">Mỗi câu hỏi chỉ có một cơ hội nhận điểm tối đa. Trò chơi ưu tiên học đúng tiến trình, làm lần lượt từng câu một.</div>
-          <div class="bullet-list">
-            <div class="bullet-item"><span class="bullet-dot"></span><span>Đúng ngay lần chọn đầu tiên: <strong>+10 điểm</strong>.</span></div>
-            <div class="bullet-item"><span class="bullet-dot"></span><span>Sai ở lần đầu, sau đó chọn đúng: <strong>0 điểm</strong> nhưng vẫn hoàn thành câu.</span></div>
-            <div class="bullet-item"><span class="bullet-dot"></span><span>Ô đã xong sẽ chuyển sang màu xanh, cửa sẽ mở khi hoàn thành đủ 4 câu.</span></div>
-            <div class="bullet-item"><span class="bullet-dot"></span><span>Màn 2 hoàn thành đủ 4 câu rồi đi qua cửa để vào màn chiến thắng.</span></div>
-          </div>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:10px;">
-            <div style="padding:16px; border-radius:18px; background:linear-gradient(135deg, rgba(138,125,255,0.12), rgba(255,255,255,0.03)); border:1px solid rgba(138,125,255,0.20);">
-              <div style="font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:#cfc9ff; margin-bottom:6px;">Màn 1</div>
-              <div style="font-size:18px; font-weight:900; line-height:1.5; color:#f1eeff;">Câu 1 → Câu 4</div>
-            </div>
-            <div style="padding:16px; border-radius:18px; background:linear-gradient(135deg, rgba(107,233,255,0.12), rgba(255,255,255,0.03)); border:1px solid rgba(107,233,255,0.20);">
-              <div style="font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:#bfefff; margin-bottom:6px;">Màn 2</div>
-              <div style="font-size:18px; font-weight:900; line-height:1.5; color:#ecfbff;">Câu 5 → Câu 8</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="screen-play-1" class="screen">
-      <div class="play-layout">
-        <aside class="sidebar glass">
-          <div class="hud-card">
-            <h3>Người chơi</h3>
-            <div id="hudPlayer1" class="player-name">Người chơi</div>
-          </div>
-          <div class="hud-card">
-            <h3>Tiến độ màn</h3>
-            <div class="stats-grid">
-              <div class="stat"><span>Điểm</span><strong id="hudScore1">0</strong></div>
-              <div class="stat"><span>Đúng</span><strong id="hudCorrect1">0/4</strong></div>
-              <div class="stat"><span>Màn</span><strong>1 / 2</strong></div>
-              <div class="stat"><span>Tổng</span><strong id="hudTotal1">0/8</strong></div>
-            </div>
-            <div class="progress-wrap"><div class="progress-bar"><div id="progress1" class="progress-fill"></div></div></div>
-          </div>
-          <div class="hud-card">
-            <h3>Gợi ý</h3>
-            <p class="note">Làm theo thứ tự câu hỏi. Khi đủ 4/4, cánh cửa ở cuối màn sẽ mở để sang màn chơi mới.</p>
-          </div>
-        </aside>
-
-        <main class="play-shell glass">
-          <div class="topbar">
-            <div class="map-title">Màn chơi 1 · Khu khởi đầu</div>
-            <div class="mini-badges">
-              <div class="mini-badge">WASD</div>
-              <div class="mini-badge">Arrow Keys</div>
-              <div class="mini-badge">4 câu hỏi</div>
-            </div>
-          </div>
-          <div class="canvas-wrap">
-            <canvas id="gameCanvas1" width="960" height="640"></canvas>
-            <div id="toast1" class="map-toast">✨ Đã mở cửa sang màn 2!</div>
-            <div id="flash1" class="flash-message"></div>
-          </div>
-        </main>
-      </div>
-    </section>
-
-    <section id="screen-play-2" class="screen">
-      <div class="play-layout">
-        <aside class="sidebar glass">
-          <div class="hud-card">
-            <h3>Người chơi</h3>
-            <div id="hudPlayer2" class="player-name">Người chơi</div>
-          </div>
-          <div class="hud-card">
-            <h3>Tiến độ màn</h3>
-            <div class="stats-grid">
-              <div class="stat"><span>Điểm</span><strong id="hudScore2">0</strong></div>
-              <div class="stat"><span>Đúng</span><strong id="hudCorrect2">0/4</strong></div>
-              <div class="stat"><span>Màn</span><strong>2 / 2</strong></div>
-              <div class="stat"><span>Tổng</span><strong id="hudTotal2">0/8</strong></div>
-            </div>
-            <div class="progress-wrap"><div class="progress-bar"><div id="progress2" class="progress-fill"></div></div></div>
-          </div>
-          <div class="hud-card">
-            <h3>Mục tiêu</h3>
-            <p class="note">Hoàn thành đủ 4 câu của màn này để tự động chuyển sang màn chiến thắng.</p>
-          </div>
-        </aside>
-
-        <main class="play-shell glass">
-          <div class="topbar">
-            <div class="map-title">Màn chơi 2 · Khu thử thách</div>
-            <div class="mini-badges">
-              <div class="mini-badge">Màn cuối</div>
-              <div class="mini-badge">4 câu hỏi</div>
-              <div class="mini-badge">Cửa cuối</div>
-            </div>
-          </div>
-          <div class="canvas-wrap">
-            <canvas id="gameCanvas2" width="960" height="640"></canvas>
-            <div id="toast2" class="map-toast">🏆 Hoàn thành đủ 4 câu! Đến cửa cuối để chiến thắng.</div>
-            <div id="flash2" class="flash-message"></div>
-          </div>
-        </main>
-      </div>
-    </section>
-
-    <section id="screen-win" class="screen">
-      <div class="win-wrap">
-        <div class="win-card glass">
-          <div class="trophy">🏆</div>
-          <h1 class="win-title">Chiến thắng!</h1>
-          <p class="win-sub">Chúc mừng <strong id="winPlayer">Người chơi</strong> đã hoàn thành toàn bộ hành trình trắc nghiệm.</p>
-          <div class="win-grid">
-            <div class="win-box"><small>Người chơi</small><strong id="winPlayerBox">—</strong></div>
-            <div class="win-box"><small>Tổng điểm</small><strong id="winScore">0</strong></div>
-            <div class="win-box"><small>Câu đúng</small><strong id="winCorrect">0/8</strong></div>
-            <div class="win-box"><small>Hoàn thành</small><strong>100%</strong></div>
-          </div>
-          <button id="restartBtn" class="btn btn-primary">Chơi lại từ đầu</button>
-          <div class="footer-note">Bạn đã vượt qua tất cả thử thách.</div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <div id="questionBackdrop" class="question-modal-backdrop">
-    <div class="question-modal glass">
-      <div id="questionNo" class="question-chip">Câu hỏi</div>
-      <h2 id="questionText" class="question-title"></h2>
-      <div id="questionHelp" class="question-sub"></div>
-      <div id="optionsGrid" class="options-grid"></div>
-      <div id="questionResult" class="question-result"></div>
-    </div>
-  </div>
-
-  <script>
-    const questions = [
-      { id: 1, stage: 1, question: 'Trong các điểm sau, điểm nào thuộc đồ thị hàm số y = 2 - 4x?', options: { A: '(1;1)', B: '(2;0)', C: '(1;-1)', D: '(1;-2)' }, correct: 'D' },
-      { id: 2, stage: 1, question: 'Cho hàm số y = f(x) = 2x - 1. Giá trị của f(0) là?', options: { A: 'f(0) = 0', B: 'f(0) = x', C: 'f(0) = 2', D: 'f(0) = -1' }, correct: 'D' },
-      { id: 3, stage: 1, question: 'Hệ số b của đường thẳng y = 2(3x - 5) - 7 là?', options: { A: '-7', B: '-5', C: '-17', D: '17' }, correct: 'C' },
-      { id: 4, stage: 1, question: 'Góc tạo bởi đường thẳng y = 3x + 4 với trục Ox là góc gì?', options: { A: 'Góc vuông', B: 'Góc nhọn', C: 'Góc tù', D: 'Góc bẹt' }, correct: 'B' },
-      { id: 5, stage: 2, question: 'Đường thẳng y = 2 - 5x có hệ số góc là?', options: { A: '2', B: '-5', C: '3', D: '-3' }, correct: 'B' },
-      { id: 6, stage: 2, question: 'Nếu hai đường thẳng y = -2x + 3 và y = (m - 7)x - 1 song song với nhau thì giá trị của m bằng?', options: { A: '5', B: '-5', C: '9', D: '-9' }, correct: 'A' },
-      { id: 7, stage: 2, question: 'Điểm M(-2;5) nằm ở góc phần tư thứ mấy?', options: { A: 'I', B: 'II', C: 'III', D: 'IV' }, correct: 'B' },
-      { id: 8, stage: 2, question: 'Hàm số y = (m + 3)x - 1 là hàm số bậc nhất khi:', options: { A: 'm > -3', B: 'm < -3', C: 'm ≠ 3', D: 'm ≠ -3' }, correct: 'D' }
-    ];
-
-    const screens = {
-      home: document.getElementById('screen-home'),
-      play1: document.getElementById('screen-play-1'),
-      play2: document.getElementById('screen-play-2'),
-      win: document.getElementById('screen-win')
-    };
-
-    const ui = {
-      playerNameInput: document.getElementById('playerNameInput'),
-      startBtn: document.getElementById('startBtn'),
-      restartBtn: document.getElementById('restartBtn'),
-      hudPlayer1: document.getElementById('hudPlayer1'),
-      hudPlayer2: document.getElementById('hudPlayer2'),
-      hudScore1: document.getElementById('hudScore1'),
-      hudScore2: document.getElementById('hudScore2'),
-      hudCorrect1: document.getElementById('hudCorrect1'),
-      hudCorrect2: document.getElementById('hudCorrect2'),
-      hudTotal1: document.getElementById('hudTotal1'),
-      hudTotal2: document.getElementById('hudTotal2'),
-      progress1: document.getElementById('progress1'),
-      progress2: document.getElementById('progress2'),
-      toast1: document.getElementById('toast1'),
-      toast2: document.getElementById('toast2'),
-      flash1: document.getElementById('flash1'),
-      flash2: document.getElementById('flash2'),
-      backdrop: document.getElementById('questionBackdrop'),
-      questionNo: document.getElementById('questionNo'),
-      questionText: document.getElementById('questionText'),
-      questionHelp: document.getElementById('questionHelp'),
-      optionsGrid: document.getElementById('optionsGrid'),
-      questionResult: document.getElementById('questionResult'),
-      winPlayer: document.getElementById('winPlayer'),
-      winPlayerBox: document.getElementById('winPlayerBox'),
-      winScore: document.getElementById('winScore'),
-      winCorrect: document.getElementById('winCorrect')
-    };
-
-    const stageConfigs = {
-      1: {
-        id: 1,
-        name: 'Khu khởi đầu',
-        canvas: document.getElementById('gameCanvas1'),
-        width: 960,
-        height: 640,
-        bg: ['#102547', '#1d315b'],
-        accent: '#6be9ff',
-        questionIds: [1, 2, 3, 4],
-        playerStart: { x: 72, y: 560 },
-        player: { x: 72, y: 560, size: 24, speed: 3.1, dir: 'right' },
-        walls: [
-          { x: 0, y: 0, w: 960, h: 28 }, { x: 0, y: 612, w: 960, h: 28 }, { x: 0, y: 0, w: 28, h: 640 }, { x: 932, y: 0, w: 28, h: 640 },
-          { x: 160, y: 120, w: 24, h: 350 }, { x: 300, y: 60, w: 24, h: 260 }, { x: 450, y: 220, w: 24, h: 320 }, { x: 600, y: 80, w: 24, h: 260 },
-          { x: 730, y: 220, w: 24, h: 320 }, { x: 160, y: 120, w: 210, h: 24 }, { x: 300, y: 296, w: 174, h: 24 }, { x: 450, y: 516, w: 304, h: 24 },
-          { x: 600, y: 80, w: 180, h: 24 }, { x: 760, y: 220, w: 120, h: 24 }
-        ],
-        questionZones: [
-          { x: 78, y: 56, w: 62, h: 62, questionId: 1 },
-          { x: 360, y: 210, w: 62, h: 62, questionId: 2 },
-          { x: 520, y: 548, w: 62, h: 62, questionId: 3 },
-          { x: 812, y: 90, w: 62, h: 62, questionId: 4 }
-        ],
-        door: { x: 840, y: 506, w: 66, h: 94, unlocked: false, openAmount: 0, to: 2 }
-      },
-      2: {
-        id: 2,
-        name: 'Khu thử thách',
-        canvas: document.getElementById('gameCanvas2'),
-        width: 960,
-        height: 640,
-        bg: ['#251548', '#3a2465'],
-        accent: '#8a7dff',
-        questionIds: [5, 6, 7, 8],
-        playerStart: { x: 72, y: 76 },
-        player: { x: 72, y: 76, size: 24, speed: 3.2, dir: 'right' },
-        walls: [
-          { x: 0, y: 0, w: 960, h: 28 }, { x: 0, y: 612, w: 960, h: 28 }, { x: 0, y: 0, w: 28, h: 640 }, { x: 932, y: 0, w: 28, h: 640 },
-          { x: 180, y: 100, w: 24, h: 420 }, { x: 360, y: 40, w: 24, h: 260 }, { x: 360, y: 380, w: 24, h: 180 }, { x: 548, y: 120, w: 24, h: 380 },
-          { x: 740, y: 60, w: 24, h: 280 }, { x: 180, y: 100, w: 204, h: 24 }, { x: 180, y: 496, w: 204, h: 24 }, { x: 548, y: 120, w: 192, h: 24 },
-          { x: 548, y: 476, w: 192, h: 24 }, { x: 740, y: 316, w: 120, h: 24 }
-        ],
-        questionZones: [
-          { x: 92, y: 520, w: 62, h: 62, questionId: 5 },
-          { x: 425, y: 92, w: 62, h: 62, questionId: 6 },
-          { x: 612, y: 528, w: 62, h: 62, questionId: 7 },
-          { x: 818, y: 104, w: 62, h: 62, questionId: 8 }
-        ],
-        door: { x: 836, y: 502, w: 74, h: 98, unlocked: false, openAmount: 0, to: 'win' }
-      }
-    };
-
-    const state = {
-      playerName: '',
-      score: 0,
-      currentScreen: 'home',
-      currentStageId: null,
-      answered: new Set(),
-      stageCorrect: { 1: 0, 2: 0 },
-      activeQuestion: null,
-      modalLocked: false,
-      keys: {},
-      toastTimer: { 1: null, 2: null },
-      flashTimer: { 1: null, 2: null },
-      lastMoveTone: 0,
-      lastZoneSoundId: null,
-      audioEnabled: false,
-      questionAttempts: {}
-    };
-
-    function showScreen(name) {
-      Object.values(screens).forEach(el => el.classList.remove('active'));
-      screens[name].classList.add('active');
-      state.currentScreen = name;
-    }
-
-    function resetStage(stageId) {
-      const stage = stageConfigs[stageId];
-      stage.player.x = stage.playerStart.x;
-      stage.player.y = stage.playerStart.y;
-      stage.player.dir = 'right';
-      stage.door.unlocked = false;
-      stage.door.openAmount = 0;
-    }
-
-    function resetGame() {
-      state.score = 0;
-      state.currentStageId = null;
-      state.answered = new Set();
-      state.stageCorrect = { 1: 0, 2: 0 };
-      state.activeQuestion = null;
-      state.modalLocked = false;
-      state.lastZoneSoundId = null;
-      state.questionAttempts = {};
-      ui.backdrop.classList.remove('active');
-      ui.questionResult.textContent = '';
-      resetStage(1);
-      resetStage(2);
-      updateHUD();
-    }
-
-    function startGame() {
-      const raw = ui.playerNameInput.value.trim();
-      if (!raw) {
-        unlockAudio();
-        playWrongSound();
-        ui.playerNameInput.focus();
-        ui.playerNameInput.style.boxShadow = '0 0 0 3px rgba(255,124,152,0.22)';
-        ui.playerNameInput.style.borderRadius = '8px';
-        alert('Vui lòng nhập tên người chơi trước khi bắt đầu.');
-        setTimeout(() => {
-          ui.playerNameInput.style.boxShadow = 'none';
-        }, 1200);
-        return;
-      }
-      state.playerName = raw;
-      unlockAudio();
-      resetGame();
-      enterStage(1);
-    }
-
-    function enterStage(stageId) {
-      state.currentStageId = stageId;
-      resetStage(stageId);
-      updateHUD();
-      showScreen(stageId === 1 ? 'play1' : 'play2');
-      showToast(stageId, stageId === 1 ? '🧭 Màn 1 bắt đầu! Hãy làm lần lượt từ Câu 1 đến Câu 4.' : '⚡ Màn 2 bắt đầu! Hoàn thành 4 câu cuối để đến chiến thắng.');
-    }
-
-    function updateHUD() {
-      ui.hudPlayer1.textContent = state.playerName || 'Người chơi';
-      ui.hudPlayer2.textContent = state.playerName || 'Người chơi';
-      ui.hudScore1.textContent = state.score;
-      ui.hudScore2.textContent = state.score;
-      ui.hudCorrect1.textContent = `${state.stageCorrect[1]}/4`;
-      ui.hudCorrect2.textContent = `${state.stageCorrect[2]}/4`;
-      ui.hudTotal1.textContent = `${state.answered.size}/8`;
-      ui.hudTotal2.textContent = `${state.answered.size}/8`;
-      ui.progress1.style.width = `${(state.stageCorrect[1] / 4) * 100}%`;
-      ui.progress2.style.width = `${(state.stageCorrect[2] / 4) * 100}%`;
-    }
-
-    function questionById(id) {
-      return questions.find(q => q.id === id);
-    }
-
-    function getNextQuestionIdForStage(stageId) {
-      const ids = stageConfigs[stageId].questionIds;
-      for (const id of ids) {
-        if (!state.answered.has(id)) return id;
-      }
-      return null;
-    }
-
-    function showFlash(stageId, message, kind) {
-      const flash = stageId === 1 ? ui.flash1 : ui.flash2;
-      flash.textContent = message;
-      flash.className = `flash-message show ${kind === 'success' ? 'flash-success' : 'flash-error'}`;
-      clearTimeout(state.flashTimer[stageId]);
-      state.flashTimer[stageId] = setTimeout(() => {
-        flash.className = 'flash-message';
-      }, 1300);
-    }
-
-    function showToast(stageId, message) {
-      const toast = stageId === 1 ? ui.toast1 : ui.toast2;
-      toast.textContent = message;
-      toast.classList.add('show');
-      clearTimeout(state.toastTimer[stageId]);
-      state.toastTimer[stageId] = setTimeout(() => toast.classList.remove('show'), 2300);
-    }
-
-    // ====== AUDIO ======
-    let audioCtx = null;
-
-    function unlockAudio() {
-      if (audioCtx) {
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        state.audioEnabled = true;
-        return;
-      }
-      try {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        state.audioEnabled = true;
-      } catch (e) {
-        state.audioEnabled = false;
-      }
-    }
-
-    function tone(freq, duration = 0.08, type = 'sine', volume = 0.03, when = 0) {
-      if (!state.audioEnabled || !audioCtx) return;
-      const now = audioCtx.currentTime + when;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = type;
-      osc.frequency.setValueAtTime(freq, now);
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(volume, now + 0.01);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start(now);
-      osc.stop(now + duration + 0.03);
-    }
-
-    function playMoveSound() {
-      const now = performance.now();
-      if (now - state.lastMoveTone < 120) return;
-      state.lastMoveTone = now;
-      tone(280, 0.035, 'square', 0.012);
-    }
-
-    function playZoneSound() {
-      tone(620, 0.06, 'triangle', 0.025, 0);
-      tone(780, 0.08, 'triangle', 0.018, 0.03);
-    }
-
-    function playWrongSound() {
-      tone(220, 0.08, 'sawtooth', 0.035, 0);
-      tone(170, 0.12, 'sawtooth', 0.03, 0.05);
-    }
-
-    function playCorrectSound() {
-      tone(560, 0.07, 'triangle', 0.03, 0);
-      tone(700, 0.09, 'triangle', 0.028, 0.05);
-      tone(880, 0.12, 'triangle', 0.024, 0.10);
-    }
-
-    function playDoorOpenSound() {
-      tone(420, 0.07, 'triangle', 0.03, 0);
-      tone(540, 0.08, 'triangle', 0.026, 0.05);
-      tone(700, 0.12, 'triangle', 0.024, 0.10);
-    }
-
-    function playWinSound() {
-      tone(523.25, 0.28, 'triangle', 0.024, 0.00);
-      tone(659.25, 0.30, 'triangle', 0.022, 0.35);
-      tone(783.99, 0.34, 'triangle', 0.022, 0.78);
-      tone(1046.5, 0.42, 'triangle', 0.024, 1.20);
-      tone(783.99, 0.36, 'triangle', 0.020, 1.72);
-      tone(1174.66, 0.48, 'triangle', 0.022, 2.25);
-    }
-
-    function unlockDoorIfReady(stageId) {
-      const stage = stageConfigs[stageId];
-      if (!stage.door.unlocked && state.stageCorrect[stageId] === 4) {
-        stage.door.unlocked = true;
-        playDoorOpenSound();
-        updateHUD();
-        showToast(stageId, stageId === 1 ? '🚪 Cửa đã mở! Hãy đi đến cửa để sang màn 2.' : '🏆 Cửa cuối đã mở! Hãy bước vào để chiến thắng.');
-      }
-    }
-
-    function openQuestion(questionId) {
-      if (state.activeQuestion || state.modalLocked) return;
-      if (state.answered.has(questionId)) return;
-      const q = questionById(questionId);
-      if (!q) return;
-
-      if (!state.questionAttempts[q.id]) {
-        state.questionAttempts[q.id] = { firstTryUsed: false, awarded: false };
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phiêu Lưu Ôn Tập Chương 5</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <style>
+      :root {
+        --bg-1: #061426;
+        --bg-2: #0b1d35;
+        --bg-3: #121f49;
+        --panel: rgba(14, 24, 46, 0.72);
+        --panel-2: rgba(18, 31, 58, 0.82);
+        --line: rgba(255, 255, 255, 0.11);
+        --text: #eef8ff;
+        --muted: #a9bdd5;
+        --accent: #6be9ff;
+        --accent-2: #8a7dff;
+        --gold: #ffd86c;
+        --pink: #ff8aa1;
+        --success: #69e58f;
+        --danger: #ff7c98;
+        --shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
+        --radius-xl: 30px;
+        --radius-lg: 22px;
+        --radius-md: 16px;
       }
 
-      playZoneSound();
-      state.activeQuestion = q;
-      ui.backdrop.classList.add('active');
-      ui.questionNo.textContent = `Câu ${q.id}`;
-      ui.questionText.textContent = q.question;
-      ui.questionHelp.textContent = `Hãy trả lời theo thứ tự. Câu này chỉ được cộng điểm nếu đúng ngay lần chọn đầu tiên.`;
-      ui.questionResult.textContent = '';
-      ui.optionsGrid.innerHTML = '';
+      * {
+        box-sizing: border-box;
+      }
 
-      Object.entries(q.options).forEach(([key, value]) => {
-        const btn = document.createElement('button');
-        btn.className = 'option-btn';
-        btn.innerHTML = `<strong>${key}.</strong> ${value}`;
-        btn.addEventListener('click', () => answerQuestion(q, key, btn));
-        ui.optionsGrid.appendChild(btn);
-      });
-    }
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        font-family: "Be Vietnam Pro", Arial, Helvetica, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(
+            circle at 15% 10%,
+            rgba(107, 233, 255, 0.16),
+            transparent 25%
+          ),
+          radial-gradient(
+            circle at 82% 8%,
+            rgba(138, 125, 255, 0.2),
+            transparent 28%
+          ),
+          radial-gradient(
+            circle at 80% 85%,
+            rgba(255, 216, 108, 0.1),
+            transparent 24%
+          ),
+          linear-gradient(135deg, var(--bg-1), var(--bg-2) 48%, var(--bg-3));
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
 
-    function answerQuestion(question, choice, clickedButton) {
-      if (state.modalLocked) return;
-      const attempt = state.questionAttempts[question.id] || { firstTryUsed: false, awarded: false };
-      state.questionAttempts[question.id] = attempt;
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        width: 42vmax;
+        height: 42vmax;
+        border-radius: 999px;
+        filter: blur(70px);
+        opacity: 0.18;
+        pointer-events: none;
+        z-index: 0;
+      }
 
-      if (choice === question.correct) {
-        state.modalLocked = true;
-        clickedButton.classList.add('correct');
+      body::before {
+        left: -14vmax;
+        top: -10vmax;
+        background: #6be9ff;
+      }
 
-        let gained = 0;
-        if (!attempt.firstTryUsed && !attempt.awarded) {
-          gained = 10;
-          state.score += gained;
-          attempt.awarded = true;
+      body::after {
+        right: -14vmax;
+        bottom: -12vmax;
+        background: #8a7dff;
+      }
+
+      .app {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        min-height: 100dvh;
+      }
+
+      .screen {
+        position: absolute;
+        inset: 0;
+        display: none;
+        padding: clamp(12px, 1.8vw, 24px);
+        animation: fadeIn 0.4s ease;
+        overflow: auto;
+      }
+
+      .screen.active {
+        display: flex;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.988);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .glass {
+        background:
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.09),
+            rgba(255, 255, 255, 0.03)
+          ),
+          linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.02),
+            rgba(255, 255, 255, 0)
+          );
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+      }
+
+      .home-layout {
+        width: min(1450px, 100%);
+        min-height: min(88dvh, 860px);
+        margin: auto;
+        display: grid;
+        grid-template-columns: 0.9fr 1.05fr 0.9fr;
+        gap: clamp(14px, 1.6vw, 22px);
+        align-items: stretch;
+      }
+
+      .home-card,
+      .play-shell,
+      .sidebar,
+      .question-modal,
+      .win-card {
+        border-radius: var(--radius-xl);
+      }
+
+      .home-card {
+        padding: clamp(18px, 2vw, 28px);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        min-height: 0;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        justify-content: center;
+      }
+
+      .home-card::before {
+        content: "";
+        position: absolute;
+        right: -80px;
+        bottom: -80px;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.12),
+          transparent 62%
+        );
+        pointer-events: none;
+      }
+
+      .home-section-title {
+        position: relative;
+        font-size: 20px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #ffffff;
+
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+
+        padding: 10px 18px;
+        border-radius: 999px;
+        width: fit-content;
+        overflow: hidden;
+
+        background: linear-gradient(
+          135deg,
+          rgba(107, 233, 255, 0.22),
+          rgba(138, 125, 255, 0.22)
+        );
+
+        border: 1px solid rgba(255, 255, 255, 0.28);
+
+        box-shadow:
+          0 0 14px rgba(107, 233, 255, 0.22),
+          0 0 28px rgba(138, 125, 255, 0.16),
+          inset 0 1px 0 rgba(255, 255, 255, 0.24);
+
+        animation: titleGlow 2.2s ease-in-out infinite;
+      }
+
+      .home-section-title::before {
+        content: "";
+        position: absolute;
+        top: -30%;
+        left: -35%;
+        width: 38%;
+        height: 160%;
+        transform: rotate(22deg);
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0),
+          rgba(255, 255, 255, 0.38),
+          rgba(255, 255, 255, 0)
+        );
+        filter: blur(2px);
+        animation: titleShine 2.8s linear infinite;
+        pointer-events: none;
+      }
+
+      .home-section-title::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.08);
+        pointer-events: none;
+      }
+
+      @keyframes titleGlow {
+        0%,
+        100% {
+          box-shadow:
+            0 0 12px rgba(107, 233, 255, 0.18),
+            0 0 22px rgba(138, 125, 255, 0.12),
+            inset 0 1px 0 rgba(255, 255, 255, 0.22);
+          transform: translateY(0);
+        }
+        50% {
+          box-shadow:
+            0 0 20px rgba(107, 233, 255, 0.34),
+            0 0 36px rgba(138, 125, 255, 0.22),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+          transform: translateY(-1px);
+        }
+      }
+
+      @keyframes titleShine {
+        0% {
+          left: -40%;
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        55% {
+          left: 115%;
+          opacity: 1;
+        }
+        100% {
+          left: 115%;
+          opacity: 0;
+        }
+      }
+
+      .home-section-text {
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: clamp(15px, 1.2vw, 18px);
+      }
+
+      .bullet-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      .bullet-item {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        color: #dcecff;
+        line-height: 1.6;
+        font-size: clamp(14px, 1.1vw, 17px);
+      }
+
+      .bullet-dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        margin-top: 8px;
+        flex: 0 0 auto;
+        background: linear-gradient(135deg, var(--gold), #ffb25a);
+        box-shadow: 0 0 18px rgba(255, 216, 108, 0.5);
+      }
+
+      .badge {
+        align-self: center;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 999px;
+        padding: 10px 18px;
+        color: var(--gold);
+        background: linear-gradient(
+          135deg,
+          rgba(255, 216, 108, 0.16),
+          rgba(255, 255, 255, 0.04)
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.08),
+          0 10px 30px rgba(0, 0, 0, 0.16);
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+
+      .hero-center {
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        padding-inline: clamp(10px, 2vw, 30px);
+      }
+
+      .title {
+  font-size: clamp(32px, 4vw, 60px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 900;
+  margin: 6px 0 6px;
+
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #dffdff 22%,
+    #9ff6ff 48%,
+    #d9c2ff 74%,
+    #fff4c7 100%
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  text-shadow: 0 10px 40px rgba(92,225,230,0.10);
+  filter: drop-shadow(0 10px 24px rgba(0,0,0,0.20));
+
+  text-wrap: balance;
+}
+
+      .hero-subtitle {
+        color: #d2e8ff;
+        font-size: clamp(16px, 1.4vw, 19px);
+        line-height: 1.75;
+        max-width: 22ch;
+        margin: 6px auto 8px;
+      }
+
+      .name-box {
+        width: 100%;
+        max-width: 420px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 15px 18px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        margin-top: 10px;
+      }
+
+      .name-box input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--text);
+        font-size: 18px;
+      }
+
+      .name-box input::placeholder {
+        color: #9db3ca;
+      }
+
+      .btn {
+        appearance: none;
+        border: none;
+        cursor: pointer;
+        padding: 16px 24px;
+        border-radius: 18px;
+        color: white;
+        font-weight: 900;
+        font-size: clamp(16px, 1.2vw, 18px);
+        letter-spacing: 0.01em;
+        transition:
+          transform 0.18s ease,
+          box-shadow 0.18s ease;
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.22);
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn-primary {
+        margin-top: 16px;
+        background: linear-gradient(135deg, var(--accent), #79caff);
+        color: #072235;
+        min-width: 240px;
+      }
+
+      .play-layout {
+        width: min(1450px, 100%);
+        min-height: min(88dvh, 860px);
+        margin: auto;
+        display: grid;
+        grid-template-columns: clamp(240px, 20vw, 300px) 1fr;
+        gap: clamp(14px, 1.4vw, 20px);
+        align-items: stretch;
+      }
+
+      .sidebar {
+        padding: clamp(14px, 1.5vw, 20px);
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        min-width: 0;
+      }
+
+      .hud-card {
+        border-radius: 22px;
+        padding: 16px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.06),
+          rgba(255, 255, 255, 0.03)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      }
+
+      .hud-card h3 {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.09em;
+        color: var(--muted);
+        margin: 0 0 10px;
+      }
+
+      .player-name {
+        font-size: clamp(24px, 2vw, 28px);
+        font-weight: 900;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        background: linear-gradient(135deg, #ffffff, #bfefff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        word-break: break-word;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .stat {
+        padding: 14px;
+        border-radius: 16px;
+        background: rgba(0, 0, 0, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .stat span {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+      }
+
+      .stat strong {
+        font-size: clamp(21px, 1.7vw, 24px);
+        font-weight: 900;
+      }
+
+      .progress-wrap {
+        margin-top: 12px;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 15px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .progress-fill {
+        height: 100%;
+        width: 0%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--gold), #ffaf63);
+        box-shadow: 0 0 18px rgba(255, 216, 108, 0.42);
+        transition: width 0.35s ease;
+      }
+
+      .note {
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: clamp(14px, 1vw, 15px);
+      }
+
+      .play-shell {
+        position: relative;
+        padding: clamp(14px, 1.4vw, 18px);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        min-width: 0;
+        background:
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.08),
+            rgba(255, 255, 255, 0.03)
+          ),
+          radial-gradient(
+            circle at 0% 0%,
+            rgba(92, 225, 230, 0.1),
+            transparent 24%
+          ),
+          radial-gradient(
+            circle at 100% 100%,
+            rgba(124, 92, 255, 0.12),
+            transparent 28%
+          );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.05),
+          0 20px 50px rgba(0, 0, 0, 0.28);
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .map-title {
+        font-size: clamp(24px, 2.2vw, 30px);
+        font-weight: 1000;
+        letter-spacing: -0.04em;
+        line-height: 1.08;
+        background: linear-gradient(
+          135deg,
+          #ffffff 0%,
+          #d8fbff 32%,
+          #bcefff 52%,
+          #ffe9ff 78%,
+          #ffffff 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow:
+          0 0 18px rgba(92, 225, 230, 0.1),
+          0 10px 30px rgba(0, 0, 0, 0.22);
+        filter: drop-shadow(0 6px 16px rgba(92, 225, 230, 0.08));
+      }
+
+      .mini-badges {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .mini-badge {
+        padding: 9px 14px;
+        border-radius: 999px;
+        font-weight: 800;
+        font-size: 12px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        color: #d9f6ff;
+      }
+
+      .canvas-wrap {
+        position: relative;
+        flex: 1;
+        min-height: 0;
+        height: 100%;
+        aspect-ratio: 3 / 2;
+        border-radius: 28px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background:
+          radial-gradient(
+            circle at 20% 0%,
+            rgba(255, 255, 255, 0.08),
+            transparent 28%
+          ),
+          radial-gradient(
+            circle at 80% 100%,
+            rgba(124, 92, 255, 0.12),
+            transparent 24%
+          ),
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.03),
+            rgba(0, 0, 0, 0.12)
+          );
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+          inset 0 30px 80px rgba(255, 255, 255, 0.03),
+          0 24px 60px rgba(0, 0, 0, 0.25);
+      }
+
+      canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: transparent;
+      }
+
+      .map-toast,
+      .flash-message {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 4;
+        border-radius: 16px;
+        padding: 12px 18px;
+        backdrop-filter: blur(12px);
+        background: rgba(6, 17, 29, 0.74);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: var(--shadow);
+        text-align: center;
+        max-width: calc(100% - 24px);
+      }
+
+      .map-toast {
+        top: 18px;
+        font-weight: 900;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.25s ease,
+          transform 0.25s ease;
+      }
+
+      .map-toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(4px);
+      }
+
+      .flash-message {
+        top: 74px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+        font-weight: 900;
+      }
+
+      .flash-message.show {
+        opacity: 1;
+      }
+      .flash-success {
+        color: #c4ffd9;
+        border-color: rgba(74, 222, 128, 0.35);
+      }
+      .flash-error {
+        color: #ffd0d8;
+        border-color: rgba(255, 124, 152, 0.35);
+      }
+
+      .question-modal-backdrop {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: rgba(1, 8, 16, 0.68);
+        backdrop-filter: blur(7px);
+        z-index: 20;
+      }
+
+      .question-modal-backdrop.active {
+        display: flex;
+      }
+
+      .question-modal {
+        width: min(860px, 100%);
+        max-height: min(88dvh, 900px);
+        overflow: auto;
+        padding: clamp(18px, 2vw, 30px);
+        background: linear-gradient(
+          180deg,
+          rgba(18, 34, 57, 0.96),
+          rgba(11, 24, 43, 0.96)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      }
+
+      .question-chip {
+        display: inline-flex;
+        border-radius: 999px;
+        padding: 9px 14px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--gold);
+        background: rgba(255, 216, 107, 0.08);
+        border: 1px solid rgba(255, 216, 107, 0.22);
+        font-weight: 900;
+        margin-bottom: 12px;
+      }
+
+      .question-title {
+        font-size: clamp(22px, 2.8vw, 34px);
+        line-height: 1.42;
+        margin: 0 0 16px;
+        color: #ffffff;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+        font-weight: 900;
+      }
+
+      .question-sub {
+        color: #c7d9ea;
+        line-height: 1.75;
+        margin-bottom: 18px;
+        font-size: 16px;
+      }
+
+      .options-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      .option-btn {
+        text-align: left;
+        padding: 18px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.08),
+          rgba(255, 255, 255, 0.04)
+        );
+        color: var(--text);
+        cursor: pointer;
+        transition:
+          transform 0.16s ease,
+          border-color 0.16s ease,
+          background 0.16s ease,
+          box-shadow 0.16s ease;
+        font-size: clamp(15px, 1.15vw, 18px);
+        line-height: 1.6;
+        font-weight: 800;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+
+      .option-btn:hover {
+        transform: translateY(-2px);
+        border-color: rgba(107, 233, 255, 0.5);
+        background: rgba(107, 233, 255, 0.1);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+      }
+
+      .option-btn.correct {
+        background: rgba(105, 229, 143, 0.16);
+        border-color: rgba(105, 229, 143, 0.62);
+        color: #dbffea;
+      }
+
+      .option-btn.wrong {
+        background: rgba(255, 124, 152, 0.16);
+        border-color: rgba(255, 124, 152, 0.62);
+        color: #ffd9e1;
+      }
+
+      .question-result {
+        min-height: 38px;
+        margin-top: 18px;
+        font-weight: 900;
+        font-size: clamp(17px, 1.4vw, 20px);
+        letter-spacing: 0.01em;
+      }
+
+      .win-wrap {
+        width: min(900px, 100%);
+        margin: auto;
+      }
+
+      .win-card {
+        padding: clamp(20px, 2.4vw, 36px);
+        text-align: center;
+      }
+
+      .trophy {
+        width: 110px;
+        height: 110px;
+        margin: 0 auto 18px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 35% 30%,
+          #fff4c4,
+          #ffd86b 40%,
+          #ffb347 82%
+        );
+        color: #5d3300;
+        font-size: 54px;
+        box-shadow: 0 12px 34px rgba(255, 194, 65, 0.35);
+      }
+
+      .win-title {
+        font-size: clamp(34px, 5vw, 66px);
+        letter-spacing: -0.04em;
+        margin: 0 0 10px;
+      }
+
+      .win-sub {
+        color: var(--muted);
+        font-size: clamp(16px, 1.3vw, 18px);
+        line-height: 1.7;
+        max-width: 50ch;
+        margin: 0 auto 24px;
+      }
+
+      .win-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin: 24px 0 28px;
+      }
+
+      .win-box {
+        padding: 18px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .win-box small {
+        display: block;
+        color: var(--muted);
+        margin-bottom: 8px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .win-box strong {
+        font-size: 24px;
+        font-weight: 900;
+      }
+
+      .footer-note {
+        color: var(--muted);
+        margin-top: 18px;
+        font-size: 14px;
+      }
+
+      @media (max-width: 1180px) {
+        .home-layout {
+          grid-template-columns: 1fr;
+          min-height: auto;
         }
 
-        ui.questionResult.textContent = gained > 0
-          ? '✅ Chính xác ngay lần đầu! Bạn được cộng 10 điểm.'
-          : '✅ Chính xác! Câu này đã qua nhưng không được cộng điểm vì không đúng ở lần chọn đầu tiên.';
+        .play-layout {
+          grid-template-columns: 1fr;
+          min-height: auto;
+        }
 
-        state.answered.add(question.id);
-        state.stageCorrect[question.stage] += 1;
-        playCorrectSound();
+        .home-card {
+          height: auto;
+        }
+
+        .sidebar {
+          order: 2;
+        }
+
+        .play-shell {
+          order: 1;
+        }
+
+        .canvas-wrap {
+          min-height: 420px;
+        }
+      }
+
+      @media (max-width: 980px) {
+        .win-grid,
+        .options-grid,
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .canvas-wrap {
+          min-height: 360px;
+        }
+
+        .topbar {
+          align-items: flex-start;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .screen {
+          padding: 10px;
+        }
+
+        .options-grid,
+        .stats-grid,
+        .win-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .canvas-wrap {
+          min-height: 300px;
+        }
+
+        .title {
+          font-size: 42px;
+        }
+
+        .map-title {
+          font-size: 21px;
+        }
+
+        .btn-primary {
+          min-width: 100%;
+        }
+
+        .question-modal-backdrop {
+          padding: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <section id="screen-home" class="screen active">
+        <div class="home-layout">
+          <div class="home-card glass">
+            <div class="home-section-title">🎮 HƯỚNG DẪN CHƠI</div>
+            <div class="home-section-text">
+              Di chuyển nhân vật bằng <strong>W A S D</strong> hoặc
+              <strong>phím mũi tên</strong>. Hãy đi đến ô câu hỏi đang được mở
+              để trả lời theo đúng thứ tự.
+            </div>
+            <div class="bullet-list">
+              <div class="bullet-item">
+                <span class="bullet-dot"></span
+                ><span
+                  >Đi tới ô câu hỏi đang sáng để mở câu hỏi tiếp theo.</span
+                >
+              </div>
+              <div class="bullet-item">
+                <span class="bullet-dot"></span
+                ><span
+                  >Nếu trả lời đúng ngay lần đầu, bạn nhận
+                  <strong>+10 điểm</strong>.</span
+                >
+              </div>
+              <div class="bullet-item">
+                <span class="bullet-dot"></span
+                ><span
+                  >Nếu trả lời sai rồi mới đúng, câu đó vẫn được qua nhưng
+                  <strong>không cộng điểm</strong>.</span
+                >
+              </div>
+              <div class="bullet-item">
+                <span class="bullet-dot"></span
+                ><span>Làm đủ 4 câu ở mỗi màn để mở cánh cửa đi tiếp.</span>
+              </div>
+            </div>
+            <div style="display: grid; gap: 12px; margin-top: 8px">
+              <div
+                style="
+                  padding: 14px 16px;
+                  border-radius: 18px;
+                  background: linear-gradient(
+                    135deg,
+                    rgba(107, 233, 255, 0.1),
+                    rgba(255, 255, 255, 0.03)
+                  );
+                  border: 1px solid rgba(107, 233, 255, 0.18);
+                "
+              >
+                <div
+                  style="
+                    font-size: 12px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    color: #a8ddf0;
+                    margin-bottom: 6px;
+                  "
+                >
+                  Mẹo chơi
+                </div>
+                <div style="font-size: 16px; line-height: 1.7; color: #e8f7ff">
+                  Quan sát ô nào đang sáng rõ nhất. Đó là câu hỏi đang được phép
+                  làm.
+                </div>
+              </div>
+              <div
+                style="
+                  padding: 14px 16px;
+                  border-radius: 18px;
+                  background: linear-gradient(
+                    135deg,
+                    rgba(255, 216, 108, 0.1),
+                    rgba(255, 255, 255, 0.03)
+                  );
+                  border: 1px solid rgba(255, 216, 108, 0.18);
+                "
+              >
+                <div
+                  style="
+                    font-size: 12px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    color: #ffe39c;
+                    margin-bottom: 6px;
+                  "
+                >
+                  Điểm số
+                </div>
+                <div style="font-size: 16px; line-height: 1.7; color: #fff7df">
+                  Chỉ cộng điểm khi trả lời đúng ngay lần chọn đầu tiên của mỗi
+                  câu.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="home-card glass hero-center">
+            <div class="badge">✨ Mini game học tập phiêu lưu</div>
+            <h1 class="title">Phiêu Lưu Ôn Tập</h1>
+            <h1 class="title">Chương 5</h1>
+            <p class="hero-subtitle">
+              Nhập tên người chơi để bắt đầu hành trình chinh phục 8 câu hỏi.
+            </p>
+            <label class="name-box">
+              <span>👤</span>
+              <input
+                id="playerNameInput"
+                type="text"
+                maxlength="24"
+                placeholder="Nhập tên người chơi"
+              />
+            </label>
+            <button id="startBtn" class="btn btn-primary">
+              Bắt đầu phiêu lưu
+            </button>
+          </div>
+
+          <div class="home-card glass">
+            <div class="home-section-title">📜 LUẬT CHƠI</div>
+            <div class="home-section-text">
+              Mỗi câu hỏi chỉ có một cơ hội nhận điểm tối đa. Trò chơi ưu tiên
+              học đúng tiến trình, làm lần lượt từng câu một.
+            </div>
+            <div class="bullet-list">
+              <div class="bullet-item">
+                <span class="bullet-dot"></span
+                ><span
+                  >Đúng ngay lần chọn đầu tiên: <strong>+10 điểm</strong>.</span
+                >
+              </div>
+              <div class="bullet-item">
+                <span class="bullet-dot"></span
+                ><span
+                  >Sai ở lần đầu, sau đó chọn đúng:
+                  <strong>0 điểm</strong> nhưng vẫn hoàn thành câu.</span
+                >
+              </div>
+              <div class="bullet-item">
+                <span class="bullet-dot"></span
+                ><span
+                  >Ô đã xong sẽ chuyển sang màu xanh, cửa sẽ mở khi hoàn thành
+                  đủ 4 câu.</span
+                >
+              </div>
+              <div class="bullet-item">
+                <span class="bullet-dot"></span
+                ><span
+                  >Màn 2 hoàn thành đủ 4 câu rồi đi qua cửa để vào màn chiến
+                  thắng.</span
+                >
+              </div>
+            </div>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                margin-top: 10px;
+              "
+            >
+              <div
+                style="
+                  padding: 16px;
+                  border-radius: 18px;
+                  background: linear-gradient(
+                    135deg,
+                    rgba(138, 125, 255, 0.12),
+                    rgba(255, 255, 255, 0.03)
+                  );
+                  border: 1px solid rgba(138, 125, 255, 0.2);
+                "
+              >
+                <div
+                  style="
+                    font-size: 12px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    color: #cfc9ff;
+                    margin-bottom: 6px;
+                  "
+                >
+                  Màn 1
+                </div>
+                <div
+                  style="
+                    font-size: 18px;
+                    font-weight: 900;
+                    line-height: 1.5;
+                    color: #f1eeff;
+                  "
+                >
+                  Câu 1 → Câu 4
+                </div>
+              </div>
+              <div
+                style="
+                  padding: 16px;
+                  border-radius: 18px;
+                  background: linear-gradient(
+                    135deg,
+                    rgba(107, 233, 255, 0.12),
+                    rgba(255, 255, 255, 0.03)
+                  );
+                  border: 1px solid rgba(107, 233, 255, 0.2);
+                "
+              >
+                <div
+                  style="
+                    font-size: 12px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    color: #bfefff;
+                    margin-bottom: 6px;
+                  "
+                >
+                  Màn 2
+                </div>
+                <div
+                  style="
+                    font-size: 18px;
+                    font-weight: 900;
+                    line-height: 1.5;
+                    color: #ecfbff;
+                  "
+                >
+                  Câu 5 → Câu 8
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-play-1" class="screen">
+        <div class="play-layout">
+          <aside class="sidebar glass">
+            <div class="hud-card">
+              <h3>Người chơi</h3>
+              <div id="hudPlayer1" class="player-name">Người chơi</div>
+            </div>
+            <div class="hud-card">
+              <h3>Tiến độ màn</h3>
+              <div class="stats-grid">
+                <div class="stat">
+                  <span>Điểm</span><strong id="hudScore1">0</strong>
+                </div>
+                <div class="stat">
+                  <span>Đúng</span><strong id="hudCorrect1">0/4</strong>
+                </div>
+                <div class="stat"><span>Màn</span><strong>1 / 2</strong></div>
+                <div class="stat">
+                  <span>Tổng</span><strong id="hudTotal1">0/8</strong>
+                </div>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-bar">
+                  <div id="progress1" class="progress-fill"></div>
+                </div>
+              </div>
+            </div>
+            <div class="hud-card">
+              <h3>Gợi ý</h3>
+              <p class="note">
+                Làm theo thứ tự câu hỏi. Khi đủ 4/4, cánh cửa ở cuối màn sẽ mở
+                để sang màn chơi mới.
+              </p>
+            </div>
+          </aside>
+
+          <main class="play-shell glass">
+            <div class="topbar">
+              <div class="map-title">Màn chơi 1 · Khu khởi đầu</div>
+              <div class="mini-badges">
+                <div class="mini-badge">WASD</div>
+                <div class="mini-badge">Arrow Keys</div>
+                <div class="mini-badge">4 câu hỏi</div>
+              </div>
+            </div>
+            <div class="canvas-wrap">
+              <canvas id="gameCanvas1" width="960" height="640"></canvas>
+              <div id="toast1" class="map-toast">✨ Đã mở cửa sang màn 2!</div>
+              <div id="flash1" class="flash-message"></div>
+            </div>
+          </main>
+        </div>
+      </section>
+
+      <section id="screen-play-2" class="screen">
+        <div class="play-layout">
+          <aside class="sidebar glass">
+            <div class="hud-card">
+              <h3>Người chơi</h3>
+              <div id="hudPlayer2" class="player-name">Người chơi</div>
+            </div>
+            <div class="hud-card">
+              <h3>Tiến độ màn</h3>
+              <div class="stats-grid">
+                <div class="stat">
+                  <span>Điểm</span><strong id="hudScore2">0</strong>
+                </div>
+                <div class="stat">
+                  <span>Đúng</span><strong id="hudCorrect2">0/4</strong>
+                </div>
+                <div class="stat"><span>Màn</span><strong>2 / 2</strong></div>
+                <div class="stat">
+                  <span>Tổng</span><strong id="hudTotal2">0/8</strong>
+                </div>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-bar">
+                  <div id="progress2" class="progress-fill"></div>
+                </div>
+              </div>
+            </div>
+            <div class="hud-card">
+              <h3>Mục tiêu</h3>
+              <p class="note">
+                Hoàn thành đủ 4 câu của màn này để tự động chuyển sang màn chiến
+                thắng.
+              </p>
+            </div>
+          </aside>
+
+          <main class="play-shell glass">
+            <div class="topbar">
+              <div class="map-title">Màn chơi 2 · Khu thử thách</div>
+              <div class="mini-badges">
+                <div class="mini-badge">Màn cuối</div>
+                <div class="mini-badge">4 câu hỏi</div>
+                <div class="mini-badge">Cửa cuối</div>
+              </div>
+            </div>
+            <div class="canvas-wrap">
+              <canvas id="gameCanvas2" width="960" height="640"></canvas>
+              <div id="toast2" class="map-toast">
+                🏆 Hoàn thành đủ 4 câu! Đến cửa cuối để chiến thắng.
+              </div>
+              <div id="flash2" class="flash-message"></div>
+            </div>
+          </main>
+        </div>
+      </section>
+
+      <section id="screen-win" class="screen">
+        <div class="win-wrap">
+          <div class="win-card glass">
+            <div class="trophy">🏆</div>
+            <h1 class="win-title">Chiến thắng!</h1>
+            <p class="win-sub">
+              Chúc mừng <strong id="winPlayer">Người chơi</strong> đã hoàn thành
+              toàn bộ hành trình trắc nghiệm.
+            </p>
+            <div class="win-grid">
+              <div class="win-box">
+                <small>Người chơi</small><strong id="winPlayerBox">—</strong>
+              </div>
+              <div class="win-box">
+                <small>Tổng điểm</small><strong id="winScore">0</strong>
+              </div>
+              <div class="win-box">
+                <small>Câu đúng</small><strong id="winCorrect">0/8</strong>
+              </div>
+              <div class="win-box">
+                <small>Hoàn thành</small><strong>100%</strong>
+              </div>
+            </div>
+            <button id="restartBtn" class="btn btn-primary">
+              Chơi lại từ đầu
+            </button>
+            <div class="footer-note">Bạn đã vượt qua tất cả thử thách.</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="questionBackdrop" class="question-modal-backdrop">
+      <div class="question-modal glass">
+        <div id="questionNo" class="question-chip">Câu hỏi</div>
+        <h2 id="questionText" class="question-title"></h2>
+        <div id="questionHelp" class="question-sub"></div>
+        <div id="optionsGrid" class="options-grid"></div>
+        <div id="questionResult" class="question-result"></div>
+      </div>
+    </div>
+
+    <script>
+      const questions = [
+        {
+          id: 1,
+          stage: 1,
+          question:
+            "Trong các điểm sau, điểm nào thuộc đồ thị hàm số y = 2 - 4x?",
+          options: { A: "(1;1)", B: "(2;0)", C: "(1;-1)", D: "(1;-2)" },
+          correct: "D",
+        },
+        {
+          id: 2,
+          stage: 1,
+          question: "Cho hàm số y = f(x) = 2x - 1. Giá trị của f(0) là?",
+          options: {
+            A: "f(0) = 0",
+            B: "f(0) = x",
+            C: "f(0) = 2",
+            D: "f(0) = -1",
+          },
+          correct: "D",
+        },
+        {
+          id: 3,
+          stage: 1,
+          question: "Hệ số b của đường thẳng y = 2(3x - 5) - 7 là?",
+          options: { A: "-7", B: "-5", C: "-17", D: "17" },
+          correct: "C",
+        },
+        {
+          id: 4,
+          stage: 1,
+          question: "Góc tạo bởi đường thẳng y = 3x + 4 với trục Ox là góc gì?",
+          options: { A: "Góc vuông", B: "Góc nhọn", C: "Góc tù", D: "Góc bẹt" },
+          correct: "B",
+        },
+        {
+          id: 5,
+          stage: 2,
+          question: "Đường thẳng y = 2 - 5x có hệ số góc là?",
+          options: { A: "2", B: "-5", C: "3", D: "-3" },
+          correct: "B",
+        },
+        {
+          id: 6,
+          stage: 2,
+          question:
+            "Nếu hai đường thẳng y = -2x + 3 và y = (m - 7)x - 1 song song với nhau thì giá trị của m bằng?",
+          options: { A: "5", B: "-5", C: "9", D: "-9" },
+          correct: "A",
+        },
+        {
+          id: 7,
+          stage: 2,
+          question: "Điểm M(-2;5) nằm ở góc phần tư thứ mấy?",
+          options: { A: "I", B: "II", C: "III", D: "IV" },
+          correct: "B",
+        },
+        {
+          id: 8,
+          stage: 2,
+          question: "Hàm số y = (m + 3)x - 1 là hàm số bậc nhất khi:",
+          options: { A: "m > -3", B: "m < -3", C: "m ≠ 3", D: "m ≠ -3" },
+          correct: "D",
+        },
+      ];
+
+      const screens = {
+        home: document.getElementById("screen-home"),
+        play1: document.getElementById("screen-play-1"),
+        play2: document.getElementById("screen-play-2"),
+        win: document.getElementById("screen-win"),
+      };
+
+      const ui = {
+        playerNameInput: document.getElementById("playerNameInput"),
+        startBtn: document.getElementById("startBtn"),
+        restartBtn: document.getElementById("restartBtn"),
+        hudPlayer1: document.getElementById("hudPlayer1"),
+        hudPlayer2: document.getElementById("hudPlayer2"),
+        hudScore1: document.getElementById("hudScore1"),
+        hudScore2: document.getElementById("hudScore2"),
+        hudCorrect1: document.getElementById("hudCorrect1"),
+        hudCorrect2: document.getElementById("hudCorrect2"),
+        hudTotal1: document.getElementById("hudTotal1"),
+        hudTotal2: document.getElementById("hudTotal2"),
+        progress1: document.getElementById("progress1"),
+        progress2: document.getElementById("progress2"),
+        toast1: document.getElementById("toast1"),
+        toast2: document.getElementById("toast2"),
+        flash1: document.getElementById("flash1"),
+        flash2: document.getElementById("flash2"),
+        backdrop: document.getElementById("questionBackdrop"),
+        questionNo: document.getElementById("questionNo"),
+        questionText: document.getElementById("questionText"),
+        questionHelp: document.getElementById("questionHelp"),
+        optionsGrid: document.getElementById("optionsGrid"),
+        questionResult: document.getElementById("questionResult"),
+        winPlayer: document.getElementById("winPlayer"),
+        winPlayerBox: document.getElementById("winPlayerBox"),
+        winScore: document.getElementById("winScore"),
+        winCorrect: document.getElementById("winCorrect"),
+      };
+
+      const stageConfigs = {
+        1: {
+          id: 1,
+          name: "Khu khởi đầu",
+          canvas: document.getElementById("gameCanvas1"),
+          width: 960,
+          height: 640,
+          bg: ["#102547", "#1d315b"],
+          accent: "#6be9ff",
+          questionIds: [1, 2, 3, 4],
+          playerStart: { x: 72, y: 560 },
+          player: { x: 72, y: 560, size: 24, speed: 3.1, dir: "right" },
+          walls: [
+            { x: 0, y: 0, w: 960, h: 28 },
+            { x: 0, y: 612, w: 960, h: 28 },
+            { x: 0, y: 0, w: 28, h: 640 },
+            { x: 932, y: 0, w: 28, h: 640 },
+            { x: 160, y: 120, w: 24, h: 350 },
+            { x: 300, y: 60, w: 24, h: 260 },
+            { x: 450, y: 220, w: 24, h: 320 },
+            { x: 600, y: 80, w: 24, h: 260 },
+            { x: 730, y: 220, w: 24, h: 320 },
+            { x: 160, y: 120, w: 210, h: 24 },
+            { x: 300, y: 296, w: 174, h: 24 },
+            { x: 450, y: 516, w: 304, h: 24 },
+            { x: 600, y: 80, w: 180, h: 24 },
+            { x: 760, y: 220, w: 120, h: 24 },
+          ],
+          questionZones: [
+            { x: 78, y: 56, w: 62, h: 62, questionId: 1 },
+            { x: 360, y: 210, w: 62, h: 62, questionId: 2 },
+            { x: 520, y: 548, w: 62, h: 62, questionId: 3 },
+            { x: 812, y: 90, w: 62, h: 62, questionId: 4 },
+          ],
+          door: {
+            x: 840,
+            y: 506,
+            w: 66,
+            h: 94,
+            unlocked: false,
+            openAmount: 0,
+            to: 2,
+          },
+        },
+        2: {
+          id: 2,
+          name: "Khu thử thách",
+          canvas: document.getElementById("gameCanvas2"),
+          width: 960,
+          height: 640,
+          bg: ["#251548", "#3a2465"],
+          accent: "#8a7dff",
+          questionIds: [5, 6, 7, 8],
+          playerStart: { x: 72, y: 76 },
+          player: { x: 72, y: 76, size: 24, speed: 3.2, dir: "right" },
+          walls: [
+            { x: 0, y: 0, w: 960, h: 28 },
+            { x: 0, y: 612, w: 960, h: 28 },
+            { x: 0, y: 0, w: 28, h: 640 },
+            { x: 932, y: 0, w: 28, h: 640 },
+            { x: 180, y: 100, w: 24, h: 420 },
+            { x: 360, y: 40, w: 24, h: 260 },
+            { x: 360, y: 380, w: 24, h: 180 },
+            { x: 548, y: 120, w: 24, h: 380 },
+            { x: 740, y: 60, w: 24, h: 280 },
+            { x: 180, y: 100, w: 204, h: 24 },
+            { x: 180, y: 496, w: 204, h: 24 },
+            { x: 548, y: 120, w: 192, h: 24 },
+            { x: 548, y: 476, w: 192, h: 24 },
+            { x: 740, y: 316, w: 120, h: 24 },
+          ],
+          questionZones: [
+            { x: 92, y: 520, w: 62, h: 62, questionId: 5 },
+            { x: 425, y: 92, w: 62, h: 62, questionId: 6 },
+            { x: 612, y: 528, w: 62, h: 62, questionId: 7 },
+            { x: 818, y: 104, w: 62, h: 62, questionId: 8 },
+          ],
+          door: {
+            x: 836,
+            y: 502,
+            w: 74,
+            h: 98,
+            unlocked: false,
+            openAmount: 0,
+            to: "win",
+          },
+        },
+      };
+
+      const state = {
+        playerName: "",
+        score: 0,
+        currentScreen: "home",
+        currentStageId: null,
+        answered: new Set(),
+        stageCorrect: { 1: 0, 2: 0 },
+        activeQuestion: null,
+        modalLocked: false,
+        keys: {},
+        toastTimer: { 1: null, 2: null },
+        flashTimer: { 1: null, 2: null },
+        lastMoveTone: 0,
+        lastZoneSoundId: null,
+        audioEnabled: false,
+        questionAttempts: {},
+      };
+
+      function showScreen(name) {
+        Object.values(screens).forEach((el) => el.classList.remove("active"));
+        screens[name].classList.add("active");
+        state.currentScreen = name;
+      }
+
+      function resetStage(stageId) {
+        const stage = stageConfigs[stageId];
+        stage.player.x = stage.playerStart.x;
+        stage.player.y = stage.playerStart.y;
+        stage.player.dir = "right";
+        stage.door.unlocked = false;
+        stage.door.openAmount = 0;
+      }
+
+      function resetGame() {
+        state.score = 0;
+        state.currentStageId = null;
+        state.answered = new Set();
+        state.stageCorrect = { 1: 0, 2: 0 };
+        state.activeQuestion = null;
+        state.modalLocked = false;
+        state.lastZoneSoundId = null;
+        state.questionAttempts = {};
+        ui.backdrop.classList.remove("active");
+        ui.questionResult.textContent = "";
+        resetStage(1);
+        resetStage(2);
+        stopWinSound();
         updateHUD();
-        unlockDoorIfReady(question.stage);
-        showFlash(question.stage, gained > 0 ? `+10 điểm · Hoàn thành Câu ${question.id}` : `Hoàn thành Câu ${question.id} · Không cộng điểm`, 'success');
-
-        setTimeout(() => {
-          state.activeQuestion = null;
-          state.modalLocked = false;
-          ui.backdrop.classList.remove('active');
-          ui.questionResult.textContent = '';
-          updateHUD();
-        }, 980);
-      } else {
-        attempt.firstTryUsed = true;
-        state.modalLocked = true;
-        clickedButton.classList.add('wrong');
-        ui.questionResult.textContent = '❌ Chưa đúng. Hãy chọn lại đáp án khác. Câu này sẽ không còn được cộng điểm nữa.';
-        playWrongSound();
-        showFlash(question.stage, `Sai rồi ở Câu ${question.id} · Câu này không còn cộng điểm`, 'error');
-        setTimeout(() => {
-          clickedButton.classList.remove('wrong');
-          ui.questionResult.textContent = '';
-          state.modalLocked = false;
-        }, 760);
-      }
-    }
-
-    function rectsIntersect(a, b) {
-      return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
-    }
-
-    function doorCollisionBox(door) {
-      if (door.unlocked) {
-        return { x: door.x + 8, y: door.y + 12, w: door.w - 16, h: door.h - 20 };
-      }
-      return { x: door.x, y: door.y, w: door.w, h: door.h };
-    }
-
-    function tryMovePlayer(stage, dx, dy) {
-      const p = stage.player;
-      const nextX = p.x + dx;
-      const nextY = p.y + dy;
-      const boxX = { x: nextX + 2, y: p.y + 2, w: p.size - 4, h: p.size - 2 };
-      const boxY = { x: p.x + 2, y: nextY + 2, w: p.size - 4, h: p.size - 2 };
-
-      const doorBlock = !stage.door.unlocked ? doorCollisionBox(stage.door) : null;
-      const hitX = stage.walls.some(w => rectsIntersect(boxX, w)) || (doorBlock && rectsIntersect(boxX, doorBlock));
-      const hitY = stage.walls.some(w => rectsIntersect(boxY, w)) || (doorBlock && rectsIntersect(boxY, doorBlock));
-
-      if (!hitX) p.x = Math.max(0, Math.min(stage.width - p.size, nextX));
-      if (!hitY) p.y = Math.max(0, Math.min(stage.height - p.size, nextY));
-    }
-
-    function updateStage(stageId) {
-      if (state.currentStageId !== stageId) return;
-      const stage = stageConfigs[stageId];
-      const p = stage.player;
-
-      if (stage.door.unlocked && stage.door.openAmount < 1) {
-        stage.door.openAmount = Math.min(1, stage.door.openAmount + 0.04);
       }
 
-      if (state.activeQuestion) return;
-
-      let dx = 0;
-      let dy = 0;
-      let moved = false;
-
-      if (state.keys['ArrowUp'] || state.keys['w'] || state.keys['W']) { dy -= p.speed; p.dir = 'up'; moved = true; }
-      if (state.keys['ArrowDown'] || state.keys['s'] || state.keys['S']) { dy += p.speed; p.dir = 'down'; moved = true; }
-      if (state.keys['ArrowLeft'] || state.keys['a'] || state.keys['A']) { dx -= p.speed; p.dir = 'left'; moved = true; }
-      if (state.keys['ArrowRight'] || state.keys['d'] || state.keys['D']) { dx += p.speed; p.dir = 'right'; moved = true; }
-
-      if (dx !== 0 && dy !== 0) {
-        dx *= 0.7071;
-        dy *= 0.7071;
-      }
-
-      if (moved) playMoveSound();
-      tryMovePlayer(stage, dx, dy);
-
-      const playerBox = { x: p.x + 2, y: p.y + 2, w: p.size - 4, h: p.size - 2 };
-      const nextQuestionId = getNextQuestionIdForStage(stageId);
-      if (state.lastZoneSoundId !== nextQuestionId) state.lastZoneSoundId = null;
-
-      for (const zone of stage.questionZones) {
-        if (zone.questionId !== nextQuestionId) continue;
-        if (!state.answered.has(zone.questionId) && rectsIntersect(playerBox, zone)) {
-          openQuestion(zone.questionId);
-          state.lastZoneSoundId = zone.questionId;
+      function startGame() {
+        const raw = ui.playerNameInput.value.trim();
+        if (!raw) {
+          unlockAudio();
+          playWrongSound();
+          ui.playerNameInput.focus();
+          ui.playerNameInput.style.boxShadow =
+            "0 0 0 3px rgba(255,124,152,0.22)";
+          ui.playerNameInput.style.borderRadius = "8px";
+          alert("Vui lòng nhập tên người chơi trước khi bắt đầu.");
+          setTimeout(() => {
+            ui.playerNameInput.style.boxShadow = "none";
+          }, 1200);
           return;
         }
+        state.playerName = raw;
+        unlockAudio();
+        resetGame();
+        enterStage(1);
       }
 
-      if (stage.door.unlocked) {
-        const doorPass = { x: stage.door.x + 12, y: stage.door.y + 18, w: stage.door.w - 24, h: stage.door.h - 24 };
-        if (rectsIntersect(playerBox, doorPass)) {
-          if (stage.door.to === 2) {
-            enterStage(2);
-          } else {
-            finishGame();
+      function enterStage(stageId) {
+        state.currentStageId = stageId;
+        resetStage(stageId);
+        updateHUD();
+        showScreen(stageId === 1 ? "play1" : "play2");
+        showToast(
+          stageId,
+          stageId === 1
+            ? "🧭 Màn 1 bắt đầu! Hãy làm lần lượt từ Câu 1 đến Câu 4."
+            : "⚡ Màn 2 bắt đầu! Hoàn thành 4 câu cuối để đến chiến thắng.",
+        );
+      }
+
+      function updateHUD() {
+        ui.hudPlayer1.textContent = state.playerName || "Người chơi";
+        ui.hudPlayer2.textContent = state.playerName || "Người chơi";
+        ui.hudScore1.textContent = state.score;
+        ui.hudScore2.textContent = state.score;
+        ui.hudCorrect1.textContent = `${state.stageCorrect[1]}/4`;
+        ui.hudCorrect2.textContent = `${state.stageCorrect[2]}/4`;
+        ui.hudTotal1.textContent = `${state.answered.size}/8`;
+        ui.hudTotal2.textContent = `${state.answered.size}/8`;
+        ui.progress1.style.width = `${(state.stageCorrect[1] / 4) * 100}%`;
+        ui.progress2.style.width = `${(state.stageCorrect[2] / 4) * 100}%`;
+      }
+
+      function questionById(id) {
+        return questions.find((q) => q.id === id);
+      }
+
+      function getNextQuestionIdForStage(stageId) {
+        const ids = stageConfigs[stageId].questionIds;
+        for (const id of ids) {
+          if (!state.answered.has(id)) return id;
+        }
+        return null;
+      }
+
+      function showFlash(stageId, message, kind) {
+        const flash = stageId === 1 ? ui.flash1 : ui.flash2;
+        flash.textContent = message;
+        flash.className = `flash-message show ${kind === "success" ? "flash-success" : "flash-error"}`;
+        clearTimeout(state.flashTimer[stageId]);
+        state.flashTimer[stageId] = setTimeout(() => {
+          flash.className = "flash-message";
+        }, 1300);
+      }
+
+      function showToast(stageId, message) {
+        const toast = stageId === 1 ? ui.toast1 : ui.toast2;
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(state.toastTimer[stageId]);
+        state.toastTimer[stageId] = setTimeout(
+          () => toast.classList.remove("show"),
+          2300,
+        );
+      }
+
+      // ====== AUDIO ======
+      let audioCtx = null;
+      let activeWinNodes = [];
+      let winStopTimer = null;
+
+      function unlockAudio() {
+        if (audioCtx) {
+          if (audioCtx.state === "suspended") audioCtx.resume();
+          state.audioEnabled = true;
+          return;
+        }
+        try {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          state.audioEnabled = true;
+        } catch (e) {
+          state.audioEnabled = false;
+        }
+      }
+
+      function tone(
+        freq,
+        duration = 0.08,
+        type = "sine",
+        volume = 0.03,
+        when = 0,
+        trackWin = false,
+      ) {
+        if (!state.audioEnabled || !audioCtx) return null;
+
+        const now = audioCtx.currentTime + when;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, now);
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(volume, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(now);
+        osc.stop(now + duration + 0.03);
+
+        if (trackWin) {
+          activeWinNodes.push({ osc, gain });
+        }
+
+        return { osc, gain };
+      }
+
+      function stopWinSound() {
+        clearTimeout(winStopTimer);
+        if (!audioCtx) return;
+
+        const now = audioCtx.currentTime;
+        activeWinNodes.forEach((node) => {
+          try {
+            node.gain.gain.cancelScheduledValues(now);
+            node.gain.gain.setValueAtTime(node.gain.gain.value || 0.0001, now);
+            node.gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+            node.osc.stop(now + 0.1);
+          } catch (e) {}
+        });
+        activeWinNodes = [];
+      }
+
+      function playMoveSound() {
+        const now = performance.now();
+        if (now - state.lastMoveTone < 120) return;
+        state.lastMoveTone = now;
+        tone(280, 0.035, "square", 0.012);
+      }
+
+      function playZoneSound() {
+        tone(620, 0.06, "triangle", 0.025, 0);
+        tone(780, 0.08, "triangle", 0.018, 0.03);
+      }
+
+      function playWrongSound() {
+        tone(220, 0.08, "sawtooth", 0.035, 0);
+        tone(170, 0.12, "sawtooth", 0.03, 0.05);
+      }
+
+      function playCorrectSound() {
+        tone(560, 0.07, "triangle", 0.03, 0);
+        tone(700, 0.09, "triangle", 0.028, 0.05);
+        tone(880, 0.12, "triangle", 0.024, 0.1);
+      }
+
+      function playDoorOpenSound() {
+        tone(420, 0.07, "triangle", 0.03, 0);
+        tone(540, 0.08, "triangle", 0.026, 0.05);
+        tone(700, 0.12, "triangle", 0.024, 0.1);
+      }
+
+      function playWinSound() {
+        stopWinSound();
+
+        // Tổng thời lượng tối đa < 3 giây
+        tone(523.25, 0.28, "triangle", 0.024, 0.0, true);
+        tone(659.25, 0.3, "triangle", 0.022, 0.35, true);
+        tone(783.99, 0.34, "triangle", 0.022, 0.78, true);
+        tone(1046.5, 0.42, "triangle", 0.024, 1.2, true);
+        tone(783.99, 0.36, "triangle", 0.02, 1.72, true);
+        tone(1174.66, 0.48, "triangle", 0.022, 2.25, true);
+
+        winStopTimer = setTimeout(() => {
+          stopWinSound();
+        }, 300);
+      }
+
+      function unlockDoorIfReady(stageId) {
+        const stage = stageConfigs[stageId];
+        if (!stage.door.unlocked && state.stageCorrect[stageId] === 4) {
+          stage.door.unlocked = true;
+          playDoorOpenSound();
+          updateHUD();
+          showToast(
+            stageId,
+            stageId === 1
+              ? "🚪 Cửa đã mở! Hãy đi đến cửa để sang màn 2."
+              : "🏆 Cửa cuối đã mở! Hãy bước vào để chiến thắng.",
+          );
+        }
+      }
+
+      function openQuestion(questionId) {
+        if (state.activeQuestion || state.modalLocked) return;
+        if (state.answered.has(questionId)) return;
+        const q = questionById(questionId);
+        if (!q) return;
+
+        if (!state.questionAttempts[q.id]) {
+          state.questionAttempts[q.id] = {
+            firstTryUsed: false,
+            awarded: false,
+          };
+        }
+
+        playZoneSound();
+        state.activeQuestion = q;
+        ui.backdrop.classList.add("active");
+        ui.questionNo.textContent = `Câu ${q.id}`;
+        ui.questionText.textContent = q.question;
+        ui.questionHelp.textContent = `Hãy trả lời theo thứ tự. Câu này chỉ được cộng điểm nếu đúng ngay lần chọn đầu tiên.`;
+        ui.questionResult.textContent = "";
+        ui.optionsGrid.innerHTML = "";
+
+        Object.entries(q.options).forEach(([key, value]) => {
+          const btn = document.createElement("button");
+          btn.className = "option-btn";
+          btn.innerHTML = `<strong>${key}.</strong> ${value}`;
+          btn.addEventListener("click", () => answerQuestion(q, key, btn));
+          ui.optionsGrid.appendChild(btn);
+        });
+      }
+
+      function answerQuestion(question, choice, clickedButton) {
+        if (state.modalLocked) return;
+        const attempt = state.questionAttempts[question.id] || {
+          firstTryUsed: false,
+          awarded: false,
+        };
+        state.questionAttempts[question.id] = attempt;
+
+        if (choice === question.correct) {
+          state.modalLocked = true;
+          clickedButton.classList.add("correct");
+
+          let gained = 0;
+          if (!attempt.firstTryUsed && !attempt.awarded) {
+            gained = 10;
+            state.score += gained;
+            attempt.awarded = true;
+          }
+
+          ui.questionResult.textContent =
+            gained > 0
+              ? "✅ Chính xác ngay lần đầu! Bạn được cộng 10 điểm."
+              : "✅ Chính xác! Câu này đã qua nhưng không được cộng điểm vì không đúng ở lần chọn đầu tiên.";
+
+          state.answered.add(question.id);
+          state.stageCorrect[question.stage] += 1;
+          playCorrectSound();
+          updateHUD();
+          unlockDoorIfReady(question.stage);
+          showFlash(
+            question.stage,
+            gained > 0
+              ? `+10 điểm · Hoàn thành Câu ${question.id}`
+              : `Hoàn thành Câu ${question.id} · Không cộng điểm`,
+            "success",
+          );
+
+          setTimeout(() => {
+            state.activeQuestion = null;
+            state.modalLocked = false;
+            ui.backdrop.classList.remove("active");
+            ui.questionResult.textContent = "";
+            updateHUD();
+          }, 980);
+        } else {
+          attempt.firstTryUsed = true;
+          state.modalLocked = true;
+          clickedButton.classList.add("wrong");
+          ui.questionResult.textContent =
+            "❌ Chưa đúng. Hãy chọn lại đáp án khác. Câu này sẽ không còn được cộng điểm nữa.";
+          playWrongSound();
+          showFlash(
+            question.stage,
+            `Sai rồi ở Câu ${question.id} · Câu này không còn cộng điểm`,
+            "error",
+          );
+          setTimeout(() => {
+            clickedButton.classList.remove("wrong");
+            ui.questionResult.textContent = "";
+            state.modalLocked = false;
+          }, 760);
+        }
+      }
+
+      function rectsIntersect(a, b) {
+        return (
+          a.x < b.x + b.w &&
+          a.x + a.w > b.x &&
+          a.y < b.y + b.h &&
+          a.y + a.h > b.y
+        );
+      }
+
+      function doorCollisionBox(door) {
+        if (door.unlocked) {
+          return {
+            x: door.x + 8,
+            y: door.y + 12,
+            w: door.w - 16,
+            h: door.h - 20,
+          };
+        }
+        return { x: door.x, y: door.y, w: door.w, h: door.h };
+      }
+
+      function tryMovePlayer(stage, dx, dy) {
+        const p = stage.player;
+        const nextX = p.x + dx;
+        const nextY = p.y + dy;
+        const boxX = { x: nextX + 2, y: p.y + 2, w: p.size - 4, h: p.size - 2 };
+        const boxY = { x: p.x + 2, y: nextY + 2, w: p.size - 4, h: p.size - 2 };
+
+        const doorBlock = !stage.door.unlocked
+          ? doorCollisionBox(stage.door)
+          : null;
+        const hitX =
+          stage.walls.some((w) => rectsIntersect(boxX, w)) ||
+          (doorBlock && rectsIntersect(boxX, doorBlock));
+        const hitY =
+          stage.walls.some((w) => rectsIntersect(boxY, w)) ||
+          (doorBlock && rectsIntersect(boxY, doorBlock));
+
+        if (!hitX) p.x = Math.max(0, Math.min(stage.width - p.size, nextX));
+        if (!hitY) p.y = Math.max(0, Math.min(stage.height - p.size, nextY));
+      }
+
+      function updateStage(stageId) {
+        if (state.currentStageId !== stageId) return;
+        const stage = stageConfigs[stageId];
+        const p = stage.player;
+
+        if (stage.door.unlocked && stage.door.openAmount < 1) {
+          stage.door.openAmount = Math.min(1, stage.door.openAmount + 0.04);
+        }
+
+        if (state.activeQuestion) return;
+
+        let dx = 0;
+        let dy = 0;
+        let moved = false;
+
+        if (state.keys["ArrowUp"] || state.keys["w"] || state.keys["W"]) {
+          dy -= p.speed;
+          p.dir = "up";
+          moved = true;
+        }
+        if (state.keys["ArrowDown"] || state.keys["s"] || state.keys["S"]) {
+          dy += p.speed;
+          p.dir = "down";
+          moved = true;
+        }
+        if (state.keys["ArrowLeft"] || state.keys["a"] || state.keys["A"]) {
+          dx -= p.speed;
+          p.dir = "left";
+          moved = true;
+        }
+        if (state.keys["ArrowRight"] || state.keys["d"] || state.keys["D"]) {
+          dx += p.speed;
+          p.dir = "right";
+          moved = true;
+        }
+
+        if (dx !== 0 && dy !== 0) {
+          dx *= 0.7071;
+          dy *= 0.7071;
+        }
+
+        if (moved) playMoveSound();
+        tryMovePlayer(stage, dx, dy);
+
+        const playerBox = {
+          x: p.x + 2,
+          y: p.y + 2,
+          w: p.size - 4,
+          h: p.size - 2,
+        };
+        const nextQuestionId = getNextQuestionIdForStage(stageId);
+        if (state.lastZoneSoundId !== nextQuestionId)
+          state.lastZoneSoundId = null;
+
+        for (const zone of stage.questionZones) {
+          if (zone.questionId !== nextQuestionId) continue;
+          if (
+            !state.answered.has(zone.questionId) &&
+            rectsIntersect(playerBox, zone)
+          ) {
+            openQuestion(zone.questionId);
+            state.lastZoneSoundId = zone.questionId;
+            return;
+          }
+        }
+
+        if (stage.door.unlocked) {
+          const doorPass = {
+            x: stage.door.x + 12,
+            y: stage.door.y + 18,
+            w: stage.door.w - 24,
+            h: stage.door.h - 24,
+          };
+          if (rectsIntersect(playerBox, doorPass)) {
+            if (stage.door.to === 2) {
+              enterStage(2);
+            } else {
+              finishGame();
+            }
           }
         }
       }
-    }
 
-    function finishGame() {
-      playWinSound();
-      ui.winPlayer.textContent = state.playerName;
-      ui.winPlayerBox.textContent = state.playerName;
-      ui.winScore.textContent = state.score;
-      ui.winCorrect.textContent = `${state.answered.size}/8`;
-      showScreen('win');
-    }
-
-    function roundRect(ctx, x, y, w, h, r, fill, stroke) {
-      const radius = Math.min(r, w / 2, h / 2);
-      ctx.beginPath();
-      ctx.moveTo(x + radius, y);
-      ctx.arcTo(x + w, y, x + w, y + h, radius);
-      ctx.arcTo(x + w, y + h, x, y + h, radius);
-      ctx.arcTo(x, y + h, x, y, radius);
-      ctx.arcTo(x, y, x + w, y, radius);
-      ctx.closePath();
-      if (fill) ctx.fill();
-      if (stroke) ctx.stroke();
-    }
-
-    function drawDoor(ctx, door, t) {
-      const x = door.x;
-      const y = door.y;
-      const w = door.w;
-      const h = door.h;
-      const openOffset = door.openAmount * (w * 0.42);
-      const pulse = 0.78 + Math.sin(t * 0.008) * 0.12;
-
-      const glow = ctx.createRadialGradient(x + w / 2, y + h / 2, 10, x + w / 2, y + h / 2, 100);
-      glow.addColorStop(0, door.unlocked ? `rgba(107,233,255,${0.36 * pulse})` : 'rgba(255,216,108,0.10)');
-      glow.addColorStop(0.5, door.unlocked ? 'rgba(107,233,255,0.12)' : 'rgba(255,255,255,0.05)');
-      glow.addColorStop(1, 'rgba(107,233,255,0)');
-      ctx.fillStyle = glow;
-      ctx.beginPath();
-      ctx.arc(x + w / 2, y + h / 2, 100, 0, Math.PI * 2);
-      ctx.fill();
-
-      const frameGrad = ctx.createLinearGradient(x, y, x, y + h);
-      frameGrad.addColorStop(0, 'rgba(229,248,255,0.90)');
-      frameGrad.addColorStop(0.35, 'rgba(164,217,255,0.76)');
-      frameGrad.addColorStop(1, 'rgba(92,157,222,0.62)');
-      ctx.fillStyle = frameGrad;
-      roundRect(ctx, x, y, w, h, 20, true, false);
-
-      ctx.fillStyle = 'rgba(8,22,40,0.88)';
-      roundRect(ctx, x + 6, y + 6, w - 12, h - 12, 15, true, false);
-
-      const leftPanelW = (w - 18) / 2;
-      const panelH = h - 18;
-
-      const panelGradA = ctx.createLinearGradient(x, y, x, y + h);
-      panelGradA.addColorStop(0, door.unlocked ? 'rgba(147,242,255,0.80)' : 'rgba(140,150,173,0.84)');
-      panelGradA.addColorStop(1, door.unlocked ? 'rgba(72,179,236,0.68)' : 'rgba(71,81,107,0.88)');
-      ctx.fillStyle = panelGradA;
-      roundRect(ctx, x + 8 - openOffset, y + 9, leftPanelW, panelH, 12, true, false);
-
-      const panelGradB = ctx.createLinearGradient(x, y, x, y + h);
-      panelGradB.addColorStop(0, door.unlocked ? 'rgba(147,242,255,0.80)' : 'rgba(140,150,173,0.84)');
-      panelGradB.addColorStop(1, door.unlocked ? 'rgba(72,179,236,0.68)' : 'rgba(71,81,107,0.88)');
-      ctx.fillStyle = panelGradB;
-      roundRect(ctx, x + w - 8 - leftPanelW + openOffset, y + 9, leftPanelW, panelH, 12, true, false);
-
-      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
-      ctx.lineWidth = 1.4;
-      roundRect(ctx, x + 8 - openOffset + 1, y + 10, leftPanelW - 2, panelH - 2, 11, false, true);
-      roundRect(ctx, x + w - 8 - leftPanelW + openOffset + 1, y + 10, leftPanelW - 2, panelH - 2, 11, false, true);
-
-      ctx.fillStyle = 'rgba(255,255,255,0.10)';
-      roundRect(ctx, x + 15 - openOffset, y + 18, leftPanelW * 0.42, 10, 5, true, false);
-      roundRect(ctx, x + w - 15 - leftPanelW + openOffset, y + 18, leftPanelW * 0.42, 10, 5, true, false);
-
-      if (!door.unlocked || door.openAmount < 0.98) {
-        ctx.fillStyle = 'rgba(255,255,255,0.18)';
-        ctx.fillRect(x + w / 2 - 1, y + 18, 2, h - 36);
+      function finishGame() {
+        ui.winPlayer.textContent = state.playerName;
+        ui.winPlayerBox.textContent = state.playerName;
+        ui.winScore.textContent = state.score;
+        ui.winCorrect.textContent = `${state.answered.size}/8`;
+        showScreen("win");
       }
 
-      if (!door.unlocked) {
-        ctx.strokeStyle = 'rgba(255,247,210,0.92)';
-        ctx.lineWidth = 2.2;
+      function roundRect(ctx, x, y, w, h, r, fill, stroke) {
+        const radius = Math.min(r, w / 2, h / 2);
         ctx.beginPath();
-        ctx.arc(x + w / 2, y + 29, 10, Math.PI, 2 * Math.PI);
+        ctx.moveTo(x + radius, y);
+        ctx.arcTo(x + w, y, x + w, y + h, radius);
+        ctx.arcTo(x + w, y + h, x, y + h, radius);
+        ctx.arcTo(x, y + h, x, y, radius);
+        ctx.arcTo(x, y, x + w, y, radius);
+        ctx.closePath();
+        if (fill) ctx.fill();
+        if (stroke) ctx.stroke();
+      }
+
+      function drawDoor(ctx, door, t) {
+        const x = door.x;
+        const y = door.y;
+        const w = door.w;
+        const h = door.h;
+        const openOffset = door.openAmount * (w * 0.42);
+        const pulse = 0.78 + Math.sin(t * 0.008) * 0.12;
+
+        const glow = ctx.createRadialGradient(
+          x + w / 2,
+          y + h / 2,
+          10,
+          x + w / 2,
+          y + h / 2,
+          100,
+        );
+        glow.addColorStop(
+          0,
+          door.unlocked
+            ? `rgba(107,233,255,${0.36 * pulse})`
+            : "rgba(255,216,108,0.10)",
+        );
+        glow.addColorStop(
+          0.5,
+          door.unlocked ? "rgba(107,233,255,0.12)" : "rgba(255,255,255,0.05)",
+        );
+        glow.addColorStop(1, "rgba(107,233,255,0)");
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(x + w / 2, y + h / 2, 100, 0, Math.PI * 2);
+        ctx.fill();
+
+        const frameGrad = ctx.createLinearGradient(x, y, x, y + h);
+        frameGrad.addColorStop(0, "rgba(229,248,255,0.90)");
+        frameGrad.addColorStop(0.35, "rgba(164,217,255,0.76)");
+        frameGrad.addColorStop(1, "rgba(92,157,222,0.62)");
+        ctx.fillStyle = frameGrad;
+        roundRect(ctx, x, y, w, h, 20, true, false);
+
+        ctx.fillStyle = "rgba(8,22,40,0.88)";
+        roundRect(ctx, x + 6, y + 6, w - 12, h - 12, 15, true, false);
+
+        const leftPanelW = (w - 18) / 2;
+        const panelH = h - 18;
+
+        const panelGradA = ctx.createLinearGradient(x, y, x, y + h);
+        panelGradA.addColorStop(
+          0,
+          door.unlocked ? "rgba(147,242,255,0.80)" : "rgba(140,150,173,0.84)",
+        );
+        panelGradA.addColorStop(
+          1,
+          door.unlocked ? "rgba(72,179,236,0.68)" : "rgba(71,81,107,0.88)",
+        );
+        ctx.fillStyle = panelGradA;
+        roundRect(
+          ctx,
+          x + 8 - openOffset,
+          y + 9,
+          leftPanelW,
+          panelH,
+          12,
+          true,
+          false,
+        );
+
+        const panelGradB = ctx.createLinearGradient(x, y, x, y + h);
+        panelGradB.addColorStop(
+          0,
+          door.unlocked ? "rgba(147,242,255,0.80)" : "rgba(140,150,173,0.84)",
+        );
+        panelGradB.addColorStop(
+          1,
+          door.unlocked ? "rgba(72,179,236,0.68)" : "rgba(71,81,107,0.88)",
+        );
+        ctx.fillStyle = panelGradB;
+        roundRect(
+          ctx,
+          x + w - 8 - leftPanelW + openOffset,
+          y + 9,
+          leftPanelW,
+          panelH,
+          12,
+          true,
+          false,
+        );
+
+        ctx.strokeStyle = "rgba(255,255,255,0.18)";
+        ctx.lineWidth = 1.4;
+        roundRect(
+          ctx,
+          x + 8 - openOffset + 1,
+          y + 10,
+          leftPanelW - 2,
+          panelH - 2,
+          11,
+          false,
+          true,
+        );
+        roundRect(
+          ctx,
+          x + w - 8 - leftPanelW + openOffset + 1,
+          y + 10,
+          leftPanelW - 2,
+          panelH - 2,
+          11,
+          false,
+          true,
+        );
+
+        ctx.fillStyle = "rgba(255,255,255,0.10)";
+        roundRect(
+          ctx,
+          x + 15 - openOffset,
+          y + 18,
+          leftPanelW * 0.42,
+          10,
+          5,
+          true,
+          false,
+        );
+        roundRect(
+          ctx,
+          x + w - 15 - leftPanelW + openOffset,
+          y + 18,
+          leftPanelW * 0.42,
+          10,
+          5,
+          true,
+          false,
+        );
+
+        if (!door.unlocked || door.openAmount < 0.98) {
+          ctx.fillStyle = "rgba(255,255,255,0.18)";
+          ctx.fillRect(x + w / 2 - 1, y + 18, 2, h - 36);
+        }
+
+        if (!door.unlocked) {
+          ctx.strokeStyle = "rgba(255,247,210,0.92)";
+          ctx.lineWidth = 2.2;
+          ctx.beginPath();
+          ctx.arc(x + w / 2, y + 29, 10, Math.PI, 2 * Math.PI);
+          ctx.stroke();
+
+          const lockBody = ctx.createLinearGradient(
+            x + w / 2 - 13,
+            y + 30,
+            x + w / 2 + 13,
+            y + 52,
+          );
+          lockBody.addColorStop(0, "#ffe7a8");
+          lockBody.addColorStop(1, "#ffc857");
+          ctx.fillStyle = lockBody;
+          roundRect(ctx, x + w / 2 - 13, y + 30, 26, 24, 7, true, false);
+
+          ctx.fillStyle = "#6f4f00";
+          ctx.font = "900 11px Inter, Arial";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText("LOCK", x + w / 2, y + 42);
+        } else {
+          ctx.fillStyle = "rgba(217,252,255,0.96)";
+          ctx.font = "900 14px Inter, Arial";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText("OPEN", x + w / 2, y + 24);
+        }
+      }
+
+      function drawStage(stageId, t) {
+        const stage = stageConfigs[stageId];
+        const canvas = stage.canvas;
+        const ctx = canvas.getContext("2d");
+        const w = canvas.width;
+        const h = canvas.height;
+        const p = stage.player;
+
+        ctx.clearRect(0, 0, w, h);
+
+        const bg = ctx.createLinearGradient(0, 0, w, h);
+        bg.addColorStop(0, stage.bg[0]);
+        bg.addColorStop(1, stage.bg[1]);
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        for (let i = 0; i < 3; i++) {
+          const y = 80 + i * 130 + Math.sin(t * 0.0012 + i * 1.8) * 24;
+          const aurora = ctx.createLinearGradient(0, y, w, y + 70);
+          aurora.addColorStop(
+            0,
+            stageId === 1 ? "rgba(107,233,255,0.00)" : "rgba(173,120,255,0.00)",
+          );
+          aurora.addColorStop(
+            0.2,
+            stageId === 1 ? "rgba(107,233,255,0.09)" : "rgba(173,120,255,0.11)",
+          );
+          aurora.addColorStop(
+            0.55,
+            stageId === 1 ? "rgba(255,216,108,0.06)" : "rgba(107,233,255,0.08)",
+          );
+          aurora.addColorStop(
+            0.85,
+            stageId === 1 ? "rgba(138,125,255,0.08)" : "rgba(255,216,108,0.05)",
+          );
+          aurora.addColorStop(1, "rgba(255,255,255,0.00)");
+          ctx.fillStyle = aurora;
+          ctx.beginPath();
+          ctx.moveTo(0, y + 15);
+          for (let x = 0; x <= w; x += 40) {
+            const waveY = y + Math.sin(x * 0.01 + t * 0.0016 + i) * 18;
+            ctx.lineTo(x, waveY);
+          }
+          ctx.lineTo(w, y + 70);
+          ctx.lineTo(0, y + 80);
+          ctx.closePath();
+          ctx.fill();
+        }
+        ctx.restore();
+
+        const topGlow = ctx.createRadialGradient(
+          w * 0.18,
+          h * 0.08,
+          10,
+          w * 0.18,
+          h * 0.08,
+          w * 0.42,
+        );
+        topGlow.addColorStop(
+          0,
+          stageId === 1 ? "rgba(107,233,255,.18)" : "rgba(180,120,255,.20)",
+        );
+        topGlow.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = topGlow;
+        ctx.fillRect(0, 0, w, h);
+
+        const bottomGlow = ctx.createRadialGradient(
+          w * 0.88,
+          h * 0.88,
+          10,
+          w * 0.88,
+          h * 0.88,
+          w * 0.32,
+        );
+        bottomGlow.addColorStop(
+          0,
+          stageId === 1 ? "rgba(255,216,108,.12)" : "rgba(107,233,255,.12)",
+        );
+        bottomGlow.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = bottomGlow;
+        ctx.fillRect(0, 0, w, h);
+
+        const vignette = ctx.createRadialGradient(
+          w / 2,
+          h / 2,
+          h * 0.18,
+          w / 2,
+          h / 2,
+          h * 0.82,
+        );
+        vignette.addColorStop(0, "rgba(255,255,255,0)");
+        vignette.addColorStop(1, "rgba(0,0,0,0.28)");
+        ctx.fillStyle = vignette;
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.save();
+        for (let x = 0; x < w; x += 40) {
+          ctx.fillStyle =
+            x % 120 === 0 ? "rgba(255,255,255,0.11)" : "rgba(255,255,255,0.06)";
+          ctx.fillRect(x, 0, x % 120 === 0 ? 1.4 : 1, h);
+        }
+        for (let y = 0; y < h; y += 40) {
+          ctx.fillStyle =
+            y % 120 === 0 ? "rgba(255,255,255,0.11)" : "rgba(255,255,255,0.06)";
+          ctx.fillRect(0, y, w, y % 120 === 0 ? 1.4 : 1);
+        }
+        ctx.restore();
+
+        for (let i = 0; i < 34; i++) {
+          const px =
+            ((i * 137 + t * (0.014 + (i % 4) * 0.002)) % (w + 160)) - 80;
+          const py =
+            (i * 83 + Math.sin(t * 0.0011 + i * 0.8) * 80 + h * 0.38 + i * 9) %
+            h;
+          const radius = 10 + (i % 4) * 4;
+          const mist = ctx.createRadialGradient(
+            px,
+            py,
+            0,
+            px,
+            py,
+            radius * 2.2,
+          );
+          mist.addColorStop(0, "rgba(255,255,255,0.16)");
+          mist.addColorStop(0.45, "rgba(255,255,255,0.06)");
+          mist.addColorStop(1, "rgba(255,255,255,0)");
+          ctx.fillStyle = mist;
+          ctx.beginPath();
+          ctx.arc(px, py, radius * 2.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        stage.walls.forEach((wall) => {
+          const wallGlow = ctx.createLinearGradient(
+            wall.x,
+            wall.y,
+            wall.x + wall.w,
+            wall.y + wall.h,
+          );
+          wallGlow.addColorStop(0, "rgba(251,113,133,0.22)");
+          wallGlow.addColorStop(1, "rgba(138,125,255,0.20)");
+          ctx.fillStyle = wallGlow;
+          roundRect(
+            ctx,
+            wall.x - 4,
+            wall.y - 4,
+            wall.w + 8,
+            wall.h + 8,
+            15,
+            true,
+            false,
+          );
+
+          const wallGrad = ctx.createLinearGradient(
+            wall.x,
+            wall.y,
+            wall.x + wall.w,
+            wall.y + wall.h,
+          );
+          wallGrad.addColorStop(0, "rgba(255, 140, 164, 0.94)");
+          wallGrad.addColorStop(0.5, "rgba(211, 125, 225, 0.88)");
+          wallGrad.addColorStop(1, "rgba(110, 105, 255, 0.84)");
+          ctx.fillStyle = wallGrad;
+          roundRect(ctx, wall.x, wall.y, wall.w, wall.h, 12, true, false);
+          ctx.strokeStyle = "rgba(255,255,255,0.14)";
+          ctx.lineWidth = 1.6;
+          roundRect(
+            ctx,
+            wall.x + 1,
+            wall.y + 1,
+            wall.w - 2,
+            wall.h - 2,
+            11,
+            false,
+            true,
+          );
+          ctx.fillStyle = "rgba(255,255,255,0.10)";
+          if (wall.w > wall.h) {
+            for (let x = wall.x + 12; x < wall.x + wall.w - 12; x += 20)
+              ctx.fillRect(x, wall.y + 7, 10, 2);
+          } else {
+            for (let y = wall.y + 12; y < wall.y + wall.h - 12; y += 20)
+              ctx.fillRect(wall.x + 7, y, 2, 10);
+          }
+        });
+
+        const nextQuestionId = getNextQuestionIdForStage(stageId);
+        stage.questionZones.forEach((zone) => {
+          const solved = state.answered.has(zone.questionId);
+          const isActive = zone.questionId === nextQuestionId;
+          const pulse = 0.78 + Math.sin(t * 0.006 + zone.questionId) * 0.16;
+          const outerGlow = ctx.createRadialGradient(
+            zone.x + zone.w / 2,
+            zone.y + zone.h / 2,
+            4,
+            zone.x + zone.w / 2,
+            zone.y + zone.h / 2,
+            74,
+          );
+          outerGlow.addColorStop(
+            0,
+            solved
+              ? "rgba(74,222,128,0.62)"
+              : isActive
+                ? `rgba(255,216,107,${0.62 * pulse})`
+                : "rgba(255,255,255,0.08)",
+          );
+          outerGlow.addColorStop(
+            0.5,
+            solved
+              ? "rgba(74,222,128,0.16)"
+              : isActive
+                ? "rgba(255,216,107,0.18)"
+                : "rgba(255,255,255,0.04)",
+          );
+          outerGlow.addColorStop(1, "rgba(255,216,107,0)");
+          ctx.fillStyle = outerGlow;
+          ctx.beginPath();
+          ctx.arc(zone.x + zone.w / 2, zone.y + zone.h / 2, 74, 0, Math.PI * 2);
+          ctx.fill();
+
+          const qGrad = ctx.createLinearGradient(
+            zone.x,
+            zone.y,
+            zone.x + zone.w,
+            zone.y + zone.h,
+          );
+          if (solved) {
+            qGrad.addColorStop(0, "rgba(152, 255, 184, 0.96)");
+            qGrad.addColorStop(1, "rgba(84, 218, 129, 0.94)");
+          } else if (isActive) {
+            qGrad.addColorStop(0, "rgba(255, 237, 142, 0.98)");
+            qGrad.addColorStop(1, "rgba(236, 195, 79, 0.96)");
+          } else {
+            qGrad.addColorStop(0, "rgba(165, 176, 194, 0.50)");
+            qGrad.addColorStop(1, "rgba(110, 124, 146, 0.46)");
+          }
+          ctx.fillStyle = qGrad;
+          roundRect(ctx, zone.x, zone.y, zone.w, zone.h, 20, true, false);
+          ctx.strokeStyle =
+            solved || isActive
+              ? "rgba(255,255,255,.38)"
+              : "rgba(255,255,255,.16)";
+          ctx.lineWidth = 1.6;
+          roundRect(
+            ctx,
+            zone.x + 1,
+            zone.y + 1,
+            zone.w - 2,
+            zone.h - 2,
+            18,
+            false,
+            true,
+          );
+          ctx.fillStyle = solved
+            ? "#0f3320"
+            : isActive
+              ? "#4b3800"
+              : "rgba(255,255,255,0.72)";
+          ctx.font = "bold 22px Inter, Arial";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(
+            solved ? "✓" : isActive ? "?" : "🔒",
+            zone.x + zone.w / 2,
+            zone.y + zone.h / 2 + 1,
+          );
+        });
+
+        drawDoor(ctx, stage.door, t);
+
+        ctx.save();
+        ctx.strokeStyle = "rgba(255,255,255,0.08)";
+        ctx.lineWidth = 2;
+        roundRect(ctx, 12, 12, w - 24, h - 24, 24, false, true);
+        ctx.restore();
+
+        drawHero(ctx, p, stage.accent, t);
+      }
+
+      function drawHero(ctx, p, accent, t) {
+        const size = p.size;
+        const moving =
+          (state.keys["ArrowUp"] ||
+            state.keys["w"] ||
+            state.keys["W"] ||
+            state.keys["ArrowDown"] ||
+            state.keys["s"] ||
+            state.keys["S"] ||
+            state.keys["ArrowLeft"] ||
+            state.keys["a"] ||
+            state.keys["A"] ||
+            state.keys["ArrowRight"] ||
+            state.keys["d"] ||
+            state.keys["D"]) &&
+          state.currentStageId !== null &&
+          !state.activeQuestion;
+        const walkPhase = t * 0.03;
+        const bounce = moving
+          ? Math.sin(walkPhase) * 1.4
+          : Math.sin(t * 0.01) * 0.5;
+        const cx = p.x + size / 2;
+        const cy = p.y + size / 2 + bounce;
+        const r = size / 2;
+        const blink = Math.sin(t * 0.004) > 0.965;
+        const legSwing = moving ? Math.sin(walkPhase) * 3.8 : 0;
+        const armSwing = moving ? Math.sin(walkPhase) * 2.8 : 0;
+
+        const shadow = ctx.createRadialGradient(
+          cx,
+          p.y + size + 8,
+          1,
+          cx,
+          p.y + size + 8,
+          r * 1.2,
+        );
+        shadow.addColorStop(0, "rgba(0,0,0,.30)");
+        shadow.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = shadow;
+        ctx.beginPath();
+        ctx.ellipse(cx, p.y + size + 6, r * 0.86, r * 0.26, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = "rgba(236,248,255,.95)";
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(cx - 4, cy + r - 1);
+        ctx.lineTo(cx - 4 - legSwing * 0.38, cy + r + 6.5);
+        ctx.moveTo(cx + 4, cy + r - 1);
+        ctx.lineTo(cx + 4 + legSwing * 0.38, cy + r + 6.5);
         ctx.stroke();
 
-        const lockBody = ctx.createLinearGradient(x + w / 2 - 13, y + 30, x + w / 2 + 13, y + 52);
-        lockBody.addColorStop(0, '#ffe7a8');
-        lockBody.addColorStop(1, '#ffc857');
-        ctx.fillStyle = lockBody;
-        roundRect(ctx, x + w / 2 - 13, y + 30, 26, 24, 7, true, false);
-
-        ctx.fillStyle = '#6f4f00';
-        ctx.font = '900 11px Inter, Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('LOCK', x + w / 2, y + 42);
-      } else {
-        ctx.fillStyle = 'rgba(217,252,255,0.96)';
-        ctx.font = '900 14px Inter, Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('OPEN', x + w / 2, y + 24);
-      }
-    }
-
-    function drawStage(stageId, t) {
-      const stage = stageConfigs[stageId];
-      const canvas = stage.canvas;
-      const ctx = canvas.getContext('2d');
-      const w = canvas.width;
-      const h = canvas.height;
-      const p = stage.player;
-
-      ctx.clearRect(0, 0, w, h);
-
-      const bg = ctx.createLinearGradient(0, 0, w, h);
-      bg.addColorStop(0, stage.bg[0]);
-      bg.addColorStop(1, stage.bg[1]);
-      ctx.fillStyle = bg;
-      ctx.fillRect(0, 0, w, h);
-
-      ctx.save();
-      ctx.globalCompositeOperation = 'screen';
-      for (let i = 0; i < 3; i++) {
-        const y = 80 + i * 130 + Math.sin(t * 0.0012 + i * 1.8) * 24;
-        const aurora = ctx.createLinearGradient(0, y, w, y + 70);
-        aurora.addColorStop(0, stageId === 1 ? 'rgba(107,233,255,0.00)' : 'rgba(173,120,255,0.00)');
-        aurora.addColorStop(0.2, stageId === 1 ? 'rgba(107,233,255,0.09)' : 'rgba(173,120,255,0.11)');
-        aurora.addColorStop(0.55, stageId === 1 ? 'rgba(255,216,108,0.06)' : 'rgba(107,233,255,0.08)');
-        aurora.addColorStop(0.85, stageId === 1 ? 'rgba(138,125,255,0.08)' : 'rgba(255,216,108,0.05)');
-        aurora.addColorStop(1, 'rgba(255,255,255,0.00)');
-        ctx.fillStyle = aurora;
+        ctx.strokeStyle = "#16314e";
+        ctx.lineWidth = 2.2;
         ctx.beginPath();
-        ctx.moveTo(0, y + 15);
-        for (let x = 0; x <= w; x += 40) {
-          const waveY = y + Math.sin((x * 0.01) + (t * 0.0016) + i) * 18;
-          ctx.lineTo(x, waveY);
-        }
-        ctx.lineTo(w, y + 70);
-        ctx.lineTo(0, y + 80);
-        ctx.closePath();
-        ctx.fill();
-      }
-      ctx.restore();
+        ctx.moveTo(cx - 7.5 - legSwing * 0.38, cy + r + 6.5);
+        ctx.lineTo(cx - 1.5 - legSwing * 0.38, cy + r + 6.5);
+        ctx.moveTo(cx + 1.5 + legSwing * 0.38, cy + r + 6.5);
+        ctx.lineTo(cx + 7.5 + legSwing * 0.38, cy + r + 6.5);
+        ctx.stroke();
 
-      const topGlow = ctx.createRadialGradient(w * 0.18, h * 0.08, 10, w * 0.18, h * 0.08, w * 0.42);
-      topGlow.addColorStop(0, stageId === 1 ? 'rgba(107,233,255,.18)' : 'rgba(180,120,255,.20)');
-      topGlow.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = topGlow;
-      ctx.fillRect(0, 0, w, h);
-
-      const bottomGlow = ctx.createRadialGradient(w * 0.88, h * 0.88, 10, w * 0.88, h * 0.88, w * 0.32);
-      bottomGlow.addColorStop(0, stageId === 1 ? 'rgba(255,216,108,.12)' : 'rgba(107,233,255,.12)');
-      bottomGlow.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = bottomGlow;
-      ctx.fillRect(0, 0, w, h);
-
-      const vignette = ctx.createRadialGradient(w/2, h/2, h*0.18, w/2, h/2, h*0.82);
-      vignette.addColorStop(0, 'rgba(255,255,255,0)');
-      vignette.addColorStop(1, 'rgba(0,0,0,0.28)');
-      ctx.fillStyle = vignette;
-      ctx.fillRect(0, 0, w, h);
-
-      ctx.save();
-      for (let x = 0; x < w; x += 40) {
-        ctx.fillStyle = x % 120 === 0 ? 'rgba(255,255,255,0.11)' : 'rgba(255,255,255,0.06)';
-        ctx.fillRect(x, 0, x % 120 === 0 ? 1.4 : 1, h);
-      }
-      for (let y = 0; y < h; y += 40) {
-        ctx.fillStyle = y % 120 === 0 ? 'rgba(255,255,255,0.11)' : 'rgba(255,255,255,0.06)';
-        ctx.fillRect(0, y, w, y % 120 === 0 ? 1.4 : 1);
-      }
-      ctx.restore();
-
-      for (let i = 0; i < 34; i++) {
-        const px = (i * 137 + t * (0.014 + (i % 4) * 0.002)) % (w + 160) - 80;
-        const py = (i * 83 + Math.sin(t * 0.0011 + i * 0.8) * 80 + h * 0.38 + i * 9) % h;
-        const radius = 10 + (i % 4) * 4;
-        const mist = ctx.createRadialGradient(px, py, 0, px, py, radius * 2.2);
-        mist.addColorStop(0, 'rgba(255,255,255,0.16)');
-        mist.addColorStop(0.45, 'rgba(255,255,255,0.06)');
-        mist.addColorStop(1, 'rgba(255,255,255,0)');
-        ctx.fillStyle = mist;
+        const glow = ctx.createRadialGradient(cx, cy, 1, cx, cy, r * 1.9);
+        glow.addColorStop(0, "rgba(107,233,255,.20)");
+        glow.addColorStop(1, "rgba(107,233,255,0)");
+        ctx.fillStyle = glow;
         ctx.beginPath();
-        ctx.arc(px, py, radius * 2.2, 0, Math.PI * 2);
+        ctx.arc(cx, cy, r * 1.9, 0, Math.PI * 2);
         ctx.fill();
-      }
 
-      stage.walls.forEach((wall) => {
-        const wallGlow = ctx.createLinearGradient(wall.x, wall.y, wall.x + wall.w, wall.y + wall.h);
-        wallGlow.addColorStop(0, 'rgba(251,113,133,0.22)');
-        wallGlow.addColorStop(1, 'rgba(138,125,255,0.20)');
-        ctx.fillStyle = wallGlow;
-        roundRect(ctx, wall.x - 4, wall.y - 4, wall.w + 8, wall.h + 8, 15, true, false);
+        ctx.strokeStyle = "rgba(222,247,255,.95)";
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.moveTo(cx - r + 2, cy - 1);
+        ctx.lineTo(cx - r - 4.8, cy + armSwing * 0.5 + 2.4);
+        ctx.moveTo(cx + r - 2, cy - 1);
+        ctx.lineTo(cx + r + 4.8, cy - armSwing * 0.5 + 2.4);
+        ctx.stroke();
 
-        const wallGrad = ctx.createLinearGradient(wall.x, wall.y, wall.x + wall.w, wall.y + wall.h);
-        wallGrad.addColorStop(0, 'rgba(255, 140, 164, 0.94)');
-        wallGrad.addColorStop(0.5, 'rgba(211, 125, 225, 0.88)');
-        wallGrad.addColorStop(1, 'rgba(110, 105, 255, 0.84)');
-        ctx.fillStyle = wallGrad;
-        roundRect(ctx, wall.x, wall.y, wall.w, wall.h, 12, true, false);
-        ctx.strokeStyle = 'rgba(255,255,255,0.14)';
-        ctx.lineWidth = 1.6;
-        roundRect(ctx, wall.x + 1, wall.y + 1, wall.w - 2, wall.h - 2, 11, false, true);
-        ctx.fillStyle = 'rgba(255,255,255,0.10)';
-        if (wall.w > wall.h) {
-          for (let x = wall.x + 12; x < wall.x + wall.w - 12; x += 20) ctx.fillRect(x, wall.y + 7, 10, 2);
+        const body = ctx.createLinearGradient(cx - r, cy - r, cx + r, cy + r);
+        body.addColorStop(0, "#ffffff");
+        body.addColorStop(0.42, "#eefcff");
+        body.addColorStop(1, accent);
+        ctx.fillStyle = body;
+        roundRect(ctx, cx - r, cy - r, size, size, 8, true, false);
+
+        ctx.strokeStyle = "rgba(255,255,255,.90)";
+        ctx.lineWidth = 1.5;
+        roundRect(
+          ctx,
+          cx - r + 0.8,
+          cy - r + 0.8,
+          size - 1.6,
+          size - 1.6,
+          7,
+          false,
+          true,
+        );
+
+        ctx.fillStyle = "rgba(255,255,255,.54)";
+        roundRect(
+          ctx,
+          cx - r + size * 0.12,
+          cy - r + size * 0.11,
+          size * 0.38,
+          size * 0.18,
+          4,
+          true,
+          false,
+        );
+        ctx.fillStyle = "rgba(255,255,255,.18)";
+        roundRect(
+          ctx,
+          cx - r + size * 0.16,
+          cy + size * 0.12,
+          size * 0.58,
+          size * 0.5,
+          5,
+          true,
+          false,
+        );
+
+        const crown = ctx.createLinearGradient(
+          cx - size * 0.18,
+          cy - r - 4,
+          cx + size * 0.18,
+          cy - r,
+        );
+        crown.addColorStop(0, "#ffea96");
+        crown.addColorStop(1, "#ffc857");
+        ctx.fillStyle = crown;
+        roundRect(
+          ctx,
+          cx - size * 0.18,
+          cy - r - 4,
+          size * 0.36,
+          4.8,
+          2.4,
+          true,
+          false,
+        );
+
+        const eyeOffsetX = size * 0.18;
+        const eyeY = cy - size * 0.05;
+        ctx.fillStyle = "#17324f";
+        if (blink) {
+          ctx.fillRect(cx - eyeOffsetX - 1.5, eyeY, 3, 1.2);
+          ctx.fillRect(cx + eyeOffsetX - 1.5, eyeY, 3, 1.2);
         } else {
-          for (let y = wall.y + 12; y < wall.y + wall.h - 12; y += 20) ctx.fillRect(wall.x + 7, y, 2, 10);
+          ctx.beginPath();
+          ctx.arc(cx - eyeOffsetX, eyeY, 1.6, 0, Math.PI * 2);
+          ctx.arc(cx + eyeOffsetX, eyeY, 1.6, 0, Math.PI * 2);
+          ctx.fill();
         }
+
+        ctx.fillStyle = "rgba(255,166,190,.36)";
+        ctx.beginPath();
+        ctx.arc(cx - size * 0.23, cy + size * 0.08, 2.2, 0, Math.PI * 2);
+        ctx.arc(cx + size * 0.23, cy + size * 0.08, 2.2, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = "#2a6ea0";
+        ctx.lineWidth = 1.9;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.arc(
+          cx,
+          cy + size * 0.13,
+          size * 0.18,
+          0.15 * Math.PI,
+          0.85 * Math.PI,
+        );
+        ctx.stroke();
+      }
+
+      function loop(t = 0) {
+        updateStage(1);
+        updateStage(2);
+        drawStage(1, t);
+        drawStage(2, t);
+        requestAnimationFrame(loop);
+      }
+
+      window.addEventListener("keydown", (e) => {
+        unlockAudio();
+        state.keys[e.key] = true;
+        if (
+          ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(
+            e.key,
+          )
+        )
+          e.preventDefault();
+        if (e.key === "Enter" && state.currentScreen === "home") startGame();
       });
 
-      const nextQuestionId = getNextQuestionIdForStage(stageId);
-      stage.questionZones.forEach(zone => {
-        const solved = state.answered.has(zone.questionId);
-        const isActive = zone.questionId === nextQuestionId;
-        const pulse = 0.78 + Math.sin(t * 0.006 + zone.questionId) * 0.16;
-        const outerGlow = ctx.createRadialGradient(zone.x + zone.w / 2, zone.y + zone.h / 2, 4, zone.x + zone.w / 2, zone.y + zone.h / 2, 74);
-        outerGlow.addColorStop(0, solved ? 'rgba(74,222,128,0.62)' : isActive ? `rgba(255,216,107,${0.62 * pulse})` : 'rgba(255,255,255,0.08)');
-        outerGlow.addColorStop(0.5, solved ? 'rgba(74,222,128,0.16)' : isActive ? 'rgba(255,216,107,0.18)' : 'rgba(255,255,255,0.04)');
-        outerGlow.addColorStop(1, 'rgba(255,216,107,0)');
-        ctx.fillStyle = outerGlow;
-        ctx.beginPath();
-        ctx.arc(zone.x + zone.w / 2, zone.y + zone.h / 2, 74, 0, Math.PI * 2);
-        ctx.fill();
-
-        const qGrad = ctx.createLinearGradient(zone.x, zone.y, zone.x + zone.w, zone.y + zone.h);
-        if (solved) {
-          qGrad.addColorStop(0, 'rgba(152, 255, 184, 0.96)');
-          qGrad.addColorStop(1, 'rgba(84, 218, 129, 0.94)');
-        } else if (isActive) {
-          qGrad.addColorStop(0, 'rgba(255, 237, 142, 0.98)');
-          qGrad.addColorStop(1, 'rgba(236, 195, 79, 0.96)');
-        } else {
-          qGrad.addColorStop(0, 'rgba(165, 176, 194, 0.50)');
-          qGrad.addColorStop(1, 'rgba(110, 124, 146, 0.46)');
-        }
-        ctx.fillStyle = qGrad;
-        roundRect(ctx, zone.x, zone.y, zone.w, zone.h, 20, true, false);
-        ctx.strokeStyle = solved || isActive ? 'rgba(255,255,255,.38)' : 'rgba(255,255,255,.16)';
-        ctx.lineWidth = 1.6;
-        roundRect(ctx, zone.x + 1, zone.y + 1, zone.w - 2, zone.h - 2, 18, false, true);
-        ctx.fillStyle = solved ? '#0f3320' : isActive ? '#4b3800' : 'rgba(255,255,255,0.72)';
-        ctx.font = 'bold 22px Inter, Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(solved ? '✓' : isActive ? '?' : '🔒', zone.x + zone.w / 2, zone.y + zone.h / 2 + 1);
+      window.addEventListener("keyup", (e) => {
+        state.keys[e.key] = false;
       });
 
-      drawDoor(ctx, stage.door, t);
+      ui.startBtn.addEventListener("click", startGame);
+      ui.restartBtn.addEventListener("click", () => {
+        stopWinSound();
+        ui.playerNameInput.value = state.playerName;
+        showScreen("home");
+        resetGame();
+      });
 
-      ctx.save();
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
-      ctx.lineWidth = 2;
-      roundRect(ctx, 12, 12, w - 24, h - 24, 24, false, true);
-      ctx.restore();
-
-      drawHero(ctx, p, stage.accent, t);
-    }
-
-    function drawHero(ctx, p, accent, t) {
-      const size = p.size;
-      const moving = (state.keys['ArrowUp'] || state.keys['w'] || state.keys['W'] || state.keys['ArrowDown'] || state.keys['s'] || state.keys['S'] || state.keys['ArrowLeft'] || state.keys['a'] || state.keys['A'] || state.keys['ArrowRight'] || state.keys['d'] || state.keys['D']) && state.currentStageId !== null && !state.activeQuestion;
-      const walkPhase = t * 0.03;
-      const bounce = moving ? Math.sin(walkPhase) * 1.4 : Math.sin(t * 0.01) * 0.5;
-      const cx = p.x + size / 2;
-      const cy = p.y + size / 2 + bounce;
-      const r = size / 2;
-      const blink = Math.sin(t * 0.004) > 0.965;
-      const legSwing = moving ? Math.sin(walkPhase) * 3.8 : 0;
-      const armSwing = moving ? Math.sin(walkPhase) * 2.8 : 0;
-
-      const shadow = ctx.createRadialGradient(cx, p.y + size + 8, 1, cx, p.y + size + 8, r * 1.2);
-      shadow.addColorStop(0, 'rgba(0,0,0,.30)');
-      shadow.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = shadow;
-      ctx.beginPath();
-      ctx.ellipse(cx, p.y + size + 6, r * 0.86, r * 0.26, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.strokeStyle = 'rgba(236,248,255,.95)';
-      ctx.lineWidth = 2.5;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(cx - 4, cy + r - 1);
-      ctx.lineTo(cx - 4 - legSwing * 0.38, cy + r + 6.5);
-      ctx.moveTo(cx + 4, cy + r - 1);
-      ctx.lineTo(cx + 4 + legSwing * 0.38, cy + r + 6.5);
-      ctx.stroke();
-
-      ctx.strokeStyle = '#16314e';
-      ctx.lineWidth = 2.2;
-      ctx.beginPath();
-      ctx.moveTo(cx - 7.5 - legSwing * 0.38, cy + r + 6.5);
-      ctx.lineTo(cx - 1.5 - legSwing * 0.38, cy + r + 6.5);
-      ctx.moveTo(cx + 1.5 + legSwing * 0.38, cy + r + 6.5);
-      ctx.lineTo(cx + 7.5 + legSwing * 0.38, cy + r + 6.5);
-      ctx.stroke();
-
-      const glow = ctx.createRadialGradient(cx, cy, 1, cx, cy, r * 1.9);
-      glow.addColorStop(0, 'rgba(107,233,255,.20)');
-      glow.addColorStop(1, 'rgba(107,233,255,0)');
-      ctx.fillStyle = glow;
-      ctx.beginPath();
-      ctx.arc(cx, cy, r * 1.9, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.strokeStyle = 'rgba(222,247,255,.95)';
-      ctx.lineWidth = 2.2;
-      ctx.beginPath();
-      ctx.moveTo(cx - r + 2, cy - 1);
-      ctx.lineTo(cx - r - 4.8, cy + armSwing * 0.5 + 2.4);
-      ctx.moveTo(cx + r - 2, cy - 1);
-      ctx.lineTo(cx + r + 4.8, cy - armSwing * 0.5 + 2.4);
-      ctx.stroke();
-
-      const body = ctx.createLinearGradient(cx - r, cy - r, cx + r, cy + r);
-      body.addColorStop(0, '#ffffff');
-      body.addColorStop(0.42, '#eefcff');
-      body.addColorStop(1, accent);
-      ctx.fillStyle = body;
-      roundRect(ctx, cx - r, cy - r, size, size, 8, true, false);
-
-      ctx.strokeStyle = 'rgba(255,255,255,.90)';
-      ctx.lineWidth = 1.5;
-      roundRect(ctx, cx - r + 0.8, cy - r + 0.8, size - 1.6, size - 1.6, 7, false, true);
-
-      ctx.fillStyle = 'rgba(255,255,255,.54)';
-      roundRect(ctx, cx - r + size * 0.12, cy - r + size * 0.11, size * 0.38, size * 0.18, 4, true, false);
-      ctx.fillStyle = 'rgba(255,255,255,.18)';
-      roundRect(ctx, cx - r + size * 0.16, cy + size * 0.12, size * 0.58, size * 0.50, 5, true, false);
-
-      const crown = ctx.createLinearGradient(cx - size*0.18, cy - r - 4, cx + size*0.18, cy - r);
-      crown.addColorStop(0, '#ffea96');
-      crown.addColorStop(1, '#ffc857');
-      ctx.fillStyle = crown;
-      roundRect(ctx, cx - size * 0.18, cy - r - 4, size * 0.36, 4.8, 2.4, true, false);
-
-      const eyeOffsetX = size * 0.18;
-      const eyeY = cy - size * 0.05;
-      ctx.fillStyle = '#17324f';
-      if (blink) {
-        ctx.fillRect(cx - eyeOffsetX - 1.5, eyeY, 3, 1.2);
-        ctx.fillRect(cx + eyeOffsetX - 1.5, eyeY, 3, 1.2);
-      } else {
-        ctx.beginPath();
-        ctx.arc(cx - eyeOffsetX, eyeY, 1.6, 0, Math.PI * 2);
-        ctx.arc(cx + eyeOffsetX, eyeY, 1.6, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      ctx.fillStyle = 'rgba(255,166,190,.36)';
-      ctx.beginPath();
-      ctx.arc(cx - size * 0.23, cy + size * 0.08, 2.2, 0, Math.PI * 2);
-      ctx.arc(cx + size * 0.23, cy + size * 0.08, 2.2, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.strokeStyle = '#2a6ea0';
-      ctx.lineWidth = 1.9;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.arc(cx, cy + size * 0.13, size * 0.18, 0.15 * Math.PI, 0.85 * Math.PI);
-      ctx.stroke();
-    }
-
-    function loop(t = 0) {
-      updateStage(1);
-      updateStage(2);
-      drawStage(1, t);
-      drawStage(2, t);
-      requestAnimationFrame(loop);
-    }
-
-    window.addEventListener('keydown', e => {
-      unlockAudio();
-      state.keys[e.key] = true;
-      if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(e.key)) e.preventDefault();
-      if (e.key === 'Enter' && state.currentScreen === 'home') startGame();
-    });
-
-    window.addEventListener('keyup', e => {
-      state.keys[e.key] = false;
-    });
-
-    ui.startBtn.addEventListener('click', startGame);
-    ui.restartBtn.addEventListener('click', () => {
-      ui.playerNameInput.value = state.playerName;
-      showScreen('home');
-      resetGame();
-    });
-
-    updateHUD();
-    loop();
-  </script>
-</body>
+      updateHUD();
+      loop();
+    </script>
+  </body>
 </html>
